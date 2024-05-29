@@ -1,0 +1,43 @@
+Palabra,Definición
+Latitud,Distancia angular entre el ecuador y un punto determinado de la Tierra
+Longitud,Distancia angular entre el meridiano y un punto determinado de la Tierra
+Geoide,
+Elipsoide,
+Azimutal,
+Cenital,
+Cónica,
+Cilíndrica,
+SIG,Sistema que permite analizar,presentar e interpretar hechos relativos a la superficie terrestre.
+SIG,Sistema que permite analizar,presentar e interpretar hechos relativos a la superficie terrestre.
+SIG,Conjunto de software y hardware diseñado específicamente para la adquisición, mantenimiento y uso de datos cartográficos.
+SIG,Sistema de información diseñado para trabajar con datos georeferenciados mediante coordenadas espaciales o geográficas.
+Ráster,
+Vectorial,
+Celda,Unidad básica de los datos espaciales en el modo ráster de una rejilla o grid
+Resolución,Tamaño de una celda
+Tiling,Técnica de optimización de un ráster, en la que un mapa muy grande se divide en varios bloques más pequeños para reducir el coste computacional
+Teselado,Técnica de optimización de un ráster, en la que un mapa muy grande se divide en varios bloques más pequeños para reducir el coste computacional
+Pirámide,Técnica de optimización de visualización de un ráster, que se encarga de almacenar varios niveles de detalles de una imágen
+Punto,El objeto geográfico más básico del modo vectorial
+Línea, Unión de dos puntos en el espacio y objeto geográfico del modo raster
+Polígono, Unión compleja de varios puntos y objeto geográfico del modo raster
+Capa,Representación de un único tipo de primitiva en un SIG. Dependiendo de su finalidad pueden ser de varios tipos
+BLOB,Tipo de dato de una BBDD para almacenar datos de gran tamaño como vídeos o imágenes
+GeoSQL,Lenguajes de consulta espacial
+SSQL,Lengua de consulta espacial
+Disjoin,Operador topológico que muestra la zona no compartida de un espacio
+Meet,Operador topológico que muestra las zonas donde se juntan los dos espacios
+Overlay,Operador topológico
+Cover,Operador topológico
+Equal,Operador topológico
+Contain,Operador topológico
+Covered-By,Operador topológico
+Inside,Operador topológico
+Oracle Spatial,
+DB2,
+Informix,
+MySQL,
+PostGIS,
+Teradata,
+VMDS,
+DaaS,Modelo de negocio en que los datos están disponibles para su consulta al público bajo demanda
