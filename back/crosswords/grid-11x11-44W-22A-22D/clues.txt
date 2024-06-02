@@ -1,0 +1,45 @@
+label;clue
+1A;Finge lo que no es.
+7A;Gato (inglés).
+10A;Juntamos, fusionamos.
+11A;Amansa al equipo.
+12A;Persona de ascendencia africana y europea.
+13A;Sigla de mundialmente famosa tarjeta de crédito.
+14A;Sufijo de minerales.
+15A;Traje de baño femenino.
+17A;Caballero en la cultura británica.
+18A;Líder del Vaticano.
+19A;Poblado de pitufos.
+21A;Abreviadas señoritas.
+25A;Inmaculado, sin mezcla.
+27A;Abuelo, con cariño.
+28A;Trigo candeal privado de su corteza.
+31A;Mordisquea como ratón.
+32A;Quiebra comercial.
+33A;Índice inglés de audiencia televisiva.
+36A;Indoeuropea.
+37A;Levantar la moral.
+38A;Papel actoral.
+39A;Extraerá, quitará.
+1D;Obediente, subordinada.
+2D;Inepto, incompetente.
+3D;Forma de dirigirse a un noble.
+4D; __ Thurman, actriz de 'Kill Bill'.
+5D;Sobrino de Abraham.
+6D;Cocinaba en la parrilla.
+7D;Sacié el apetito.
+8D;Finaliza la plegaria.
+9D;Transporte urbano por tarifa.
+11D;Capital de Senegal.
+16D; __ facto, 'inmediatamente'.
+18D;__ Auster, autor de 'Leviatán'.
+20D;División histórica.
+22D;Arena del pugilista.
+23D;Nutrir la tierrra.
+24D;Madre de tu esposa.
+26D;Extrañas, muy peculiares.
+28D;Malvado del 'El rey león'.
+29D;No acierto.
+30D;Correo, en inglés.
+34D;Madre de la Virgen María.
+35D;Gesto nervioso involuntario.

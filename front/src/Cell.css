@@ -1,0 +1,19 @@
+.cell {
+  position: relative;
+}
+
+.cell__label {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+}
+
+.cell__input {
+  width: inherit;
+  height: inherit;
+  text-align: center;
+}
+
+.cell__block {
+  background-color: black;
+}
