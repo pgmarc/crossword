@@ -1,9 +1,9 @@
 import {
-  AdvancedGrid,
-  Cell,
   Crossword,
+  Cell,
   CrosswordGame,
   CrosswordInfo,
+  Position,
 } from "./types";
 import fs from "node:fs";
 import readline from "node:readline";
@@ -13,45 +13,32 @@ async function parseCrosswordFileToCrossword(
   numCols: number,
   path: string
 ): Promise<Crossword> {
-  const formattedCrossword = [];
-  const crossword: Cell[][] = [];
+  const crossword: Crossword = [];
   const fileStream = fs.createReadStream(path);
   const rl = readline.createInterface({
     input: fileStream,
     crlfDelay: Infinity,
   });
 
-  let currentLine = 0;
   for await (const line of rl) {
     if (line.length !== numCols) {
       throw Error(
         `Crossword must have ${numCols} columns but received ${line.length} instead.`
       );
     }
-    const currentRow = [];
-    const characterRow = [];
-    currentLine++;
+    const currentRow: Cell[] = [];
     for (let col = 0; col < line.length; col++) {
       const character = line[col];
       switch (character) {
         case "?":
-          characterRow.push(character);
           currentRow.push({
-            x: currentLine,
-            y: col + 1,
             dark: false,
-            across: false,
-            down: false,
-          });
+          } as Cell);
           break;
         case ".":
           currentRow.push({
-            x: currentLine,
-            y: col + 1,
             dark: true,
-            across: false,
-            down: false,
-          });
+          } as Cell);
           break;
         default:
           throw Error(
@@ -59,7 +46,6 @@ async function parseCrosswordFileToCrossword(
           );
       }
     }
-    formattedCrossword.push(characterRow);
     crossword.push(currentRow);
   }
 
@@ -68,14 +54,15 @@ async function parseCrosswordFileToCrossword(
       `Crossword should be ${numRows}x${numCols} but received ${crossword.length}${crossword[0].length} instead.`
     );
   }
-  return { formattedCrossword, crossword };
+  return crossword;
 }
 
-export function findDownAndAcross(crossword: AdvancedGrid): CrosswordInfo {
+export function findDownAndAcross(crossword: Crossword): CrosswordInfo {
   const crosswordCopy = [...crossword];
   let numCrosswordLabels = 0;
-  let numWordsAcross = 0;
-  let numWordsDown = 0;
+  const acrossPositions: Position[] = [];
+  const downPositions: Position[] = [];
+
   const numRows = crossword.length;
   const numCols = crossword[0].length;
   for (let row = 0; row < numRows; row++) {
@@ -86,16 +73,15 @@ export function findDownAndAcross(crossword: AdvancedGrid): CrosswordInfo {
       }
 
       const isPreviousAcrossCellBlock =
-        currentCell.y - 1 === 0 || crossword[row][col - 1].dark;
+        col === 0 || crossword[row][col - 1].dark;
       const isAcrossWord =
-        Math.abs(currentCell.y - numCols) >= 2 &&
+        Math.abs(col - numCols) >= 3 &&
         !crossword[row][col + 1].dark &&
         !crossword[row][col + 2].dark;
 
-      const isPreviousDownCellBlock =
-        currentCell.x - 1 === 0 || crossword[row - 1][col].dark;
+      const isPreviousDownCellBlock = row === 0 || crossword[row - 1][col].dark;
       const isDownWord =
-        Math.abs(currentCell.x - numRows) >= 2 &&
+        Math.abs(row - numRows) >= 3 &&
         !crossword[row + 1][col].dark &&
         !crossword[row + 2][col].dark;
 
@@ -108,24 +94,68 @@ export function findDownAndAcross(crossword: AdvancedGrid): CrosswordInfo {
       }
 
       if (isPreviousAcrossCellBlock && isAcrossWord) {
-        numWordsAcross++;
-        currentCell.across = true;
+        acrossPositions.push({
+          x: row,
+          y: col,
+          label: numCrosswordLabels + "A",
+        });
       }
 
       if (isPreviousDownCellBlock && isDownWord) {
-        numWordsDown++;
-        currentCell.down = true;
+        downPositions.push({ x: row, y: col, label: numCrosswordLabels + "D" });
       }
 
       crosswordCopy[row][col] = currentCell;
     }
   }
+
+  const taggedCellAcross = tagWithLabelAcrossCells(
+    acrossPositions,
+    crosswordCopy
+  );
+  const taggedAcrossAndDown = tagWithLabelDownCells(
+    downPositions,
+    taggedCellAcross
+  );
+
   return {
-    crossword: crosswordCopy,
-    numWords: numWordsAcross + numWordsDown,
-    numWordsAcross,
-    numWordsDown,
+    crossword: taggedAcrossAndDown,
+    numWords: acrossPositions.length + downPositions.length,
+    numWordsAcross: acrossPositions.length,
+    numWordsDown: downPositions.length,
   };
+}
+
+function tagWithLabelAcrossCells(
+  acrossPositions: Position[],
+  crossword: Crossword
+): Crossword {
+  const crosswordCopy = [...crossword];
+  for (const position of acrossPositions) {
+    let col = position.y;
+    while (col < crossword[0].length && !crosswordCopy[position.x][col].dark) {
+      crosswordCopy[position.x][col].across = position.label;
+      col++;
+    }
+  }
+  return crosswordCopy;
+}
+
+function tagWithLabelDownCells(
+  downPositions: Position[],
+  crossword: Crossword
+): Crossword {
+  const crosswordCopy = [...crossword];
+
+  for (const position of downPositions) {
+    let row = position.x;
+    while (row < crossword.length && !crosswordCopy[row][position.y].dark) {
+      crosswordCopy[row][position.y].down = position.label;
+      row++;
+    }
+  }
+
+  return crosswordCopy;
 }
 
 export async function rawCrossword2CrosswordGame(
@@ -135,7 +165,7 @@ export async function rawCrossword2CrosswordGame(
 ): Promise<CrosswordGame> {
   const cr = await parseCrosswordFileToCrossword(numRows, numCols, path);
   const { crossword, numWords, numWordsAcross, numWordsDown }: CrosswordInfo =
-    findDownAndAcross(cr.crossword);
+    findDownAndAcross(cr);
 
   return {
     date: new Date(),

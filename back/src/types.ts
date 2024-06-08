@@ -1,28 +1,24 @@
-export type Crossword = {
-  formattedCrossword: string[][];
-  crossword: AdvancedGrid;
+export type Crossword = Cell[][];
+
+export type Cell = {
+  label?: string;
+  dark: boolean;
+  across?: string;
+  down?: string;
 };
 
-export type AdvancedGrid = Cell[][];
-
-export interface Cell extends Position {
-  label?: string;
-  across: boolean;
-  down: boolean;
-  dark: boolean;
+export interface Position {
+  x: number;
+  y: number;
+  label: string;
 }
 
 export interface Dic {
   [key: string]: Cell;
 }
 
-interface Position {
-  x: number;
-  y: number;
-}
-
 export interface CrosswordInfo {
-  crossword: AdvancedGrid;
+  crossword: Crossword;
   numWords: number;
   numWordsAcross: number;
   numWordsDown: number;
