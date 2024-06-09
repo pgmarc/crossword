@@ -1,0 +1,730 @@
+{
+  "date": "2024-06-09T11:41:59.239Z",
+  "numRows": 11,
+  "numCols": 11,
+  "numWords": 44,
+  "numWordsAcross": 22,
+  "numWordsDown": 22,
+  "crossword": [
+    [
+      {
+        "dark": false,
+        "solution": "s",
+        "label": "1",
+        "across": "1A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "label": "2",
+        "across": "1A",
+        "down": "2D"
+      },
+      {
+        "dark": false,
+        "solution": "m",
+        "label": "3",
+        "across": "1A",
+        "down": "3D"
+      },
+      {
+        "dark": false,
+        "solution": "u",
+        "label": "4",
+        "across": "1A",
+        "down": "4D"
+      },
+      {
+        "dark": false,
+        "solution": "l",
+        "label": "5",
+        "across": "1A",
+        "down": "5D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "6",
+        "across": "1A",
+        "down": "6D"
+      },
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "c",
+        "label": "7",
+        "across": "7A",
+        "down": "7D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "8",
+        "across": "7A",
+        "down": "8D"
+      },
+      {
+        "dark": false,
+        "solution": "t",
+        "label": "9",
+        "across": "7A",
+        "down": "9D"
+      }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "u",
+        "label": "10",
+        "across": "10A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "n",
+        "across": "10A",
+        "down": "2D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "across": "10A",
+        "down": "3D"
+      },
+      {
+        "dark": false,
+        "solution": "m",
+        "across": "10A",
+        "down": "4D"
+      },
+      {
+        "dark": false,
+        "solution": "o",
+        "across": "10A",
+        "down": "5D"
+      },
+      {
+        "dark": false,
+        "solution": "s",
+        "across": "10A",
+        "down": "6D"
+      },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "d",
+        "label": "11",
+        "across": "11A",
+        "down": "11D"
+      },
+      {
+        "dark": false,
+        "solution": "o",
+        "across": "11A",
+        "down": "7D"
+      },
+      {
+        "dark": false,
+        "solution": "m",
+        "across": "11A",
+        "down": "8D"
+      },
+      { "dark": false, "solution": "a", "across": "11A", "down": "9D" }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "m",
+        "label": "12",
+        "across": "12A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "u",
+        "across": "12A",
+        "down": "2D"
+      },
+      {
+        "dark": false,
+        "solution": "l",
+        "across": "12A",
+        "down": "3D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "12A",
+        "down": "4D"
+      },
+      {
+        "dark": false,
+        "solution": "t",
+        "across": "12A",
+        "down": "5D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "12A",
+        "down": "6D"
+      },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "13",
+        "across": "13A",
+        "down": "11D"
+      },
+      {
+        "dark": false,
+        "solution": "m",
+        "across": "13A",
+        "down": "7D"
+      },
+      {
+        "dark": false,
+        "solution": "e",
+        "across": "13A",
+        "down": "8D"
+      },
+      { "dark": false, "solution": "x", "across": "13A", "down": "9D" }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "i",
+        "label": "14",
+        "across": "14A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "t",
+        "across": "14A",
+        "down": "2D"
+      },
+      {
+        "dark": false,
+        "solution": "o",
+        "across": "14A",
+        "down": "3D"
+      },
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "b",
+        "label": "15",
+        "across": "15A",
+        "down": "6D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "label": "16",
+        "across": "15A",
+        "down": "16D"
+      },
+      {
+        "dark": false,
+        "solution": "k",
+        "across": "15A",
+        "down": "11D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "across": "15A",
+        "down": "7D"
+      },
+      {
+        "dark": false,
+        "solution": "n",
+        "across": "15A",
+        "down": "8D"
+      },
+      { "dark": false, "solution": "i", "across": "15A", "down": "9D" }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "s",
+        "label": "17",
+        "across": "17A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "across": "17A",
+        "down": "2D"
+      },
+      {
+        "dark": false,
+        "solution": "r",
+        "across": "17A",
+        "down": "3D"
+      },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "p",
+        "label": "18",
+        "across": "18A",
+        "down": "18D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "18A",
+        "down": "6D"
+      },
+      {
+        "dark": false,
+        "solution": "p",
+        "across": "18A",
+        "down": "16D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "18A",
+        "down": "11D"
+      },
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "19",
+        "across": "19A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "l",
+        "across": "19A",
+        "down": "2D"
+      },
+      {
+        "dark": false,
+        "solution": "d",
+        "across": "19A",
+        "down": "3D"
+      },
+      {
+        "dark": false,
+        "solution": "e",
+        "label": "20",
+        "across": "19A",
+        "down": "20D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "19A",
+        "down": "18D"
+      },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "s",
+        "label": "21",
+        "across": "21A",
+        "down": "16D"
+      },
+      {
+        "dark": false,
+        "solution": "r",
+        "across": "21A",
+        "down": "11D"
+      },
+      {
+        "dark": false,
+        "solution": "t",
+        "label": "22",
+        "across": "21A",
+        "down": "22D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "23",
+        "across": "21A",
+        "down": "23D"
+      },
+      {
+        "dark": false,
+        "solution": "s",
+        "label": "24",
+        "across": "21A",
+        "down": "24D"
+      }
+    ],
+    [
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "p",
+        "label": "25",
+        "across": "25A",
+        "down": "20D"
+      },
+      {
+        "dark": false,
+        "solution": "u",
+        "across": "25A",
+        "down": "18D"
+      },
+      {
+        "dark": false,
+        "solution": "r",
+        "label": "26",
+        "across": "25A",
+        "down": "26D"
+      },
+      {
+        "dark": false,
+        "solution": "o",
+        "across": "25A",
+        "down": "16D"
+      },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "27",
+        "across": "27A",
+        "down": "22D"
+      },
+      {
+        "dark": false,
+        "solution": "b",
+        "across": "27A",
+        "down": "23D"
+      },
+      {
+        "dark": false,
+        "solution": "u",
+        "across": "27A",
+        "down": "24D"
+      }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "s",
+        "label": "28",
+        "across": "28A",
+        "down": "28D"
+      },
+      {
+        "dark": false,
+        "solution": "e",
+        "label": "29",
+        "across": "28A",
+        "down": "29D"
+      },
+      {
+        "dark": false,
+        "solution": "m",
+        "label": "30",
+        "across": "28A",
+        "down": "30D"
+      },
+      {
+        "dark": false,
+        "solution": "o",
+        "across": "28A",
+        "down": "20D"
+      },
+      {
+        "dark": false,
+        "solution": "l",
+        "across": "28A",
+        "down": "18D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "28A",
+        "down": "26D"
+      },
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "r",
+        "label": "31",
+        "across": "31A",
+        "down": "22D"
+      },
+      {
+        "dark": false,
+        "solution": "o",
+        "across": "31A",
+        "down": "23D"
+      },
+      {
+        "dark": false,
+        "solution": "e",
+        "across": "31A",
+        "down": "24D"
+      }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "c",
+        "label": "32",
+        "across": "32A",
+        "down": "28D"
+      },
+      {
+        "dark": false,
+        "solution": "r",
+        "across": "32A",
+        "down": "29D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "32A",
+        "down": "30D"
+      },
+      {
+        "dark": false,
+        "solution": "c",
+        "across": "32A",
+        "down": "20D"
+      },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "r",
+        "label": "33",
+        "across": "33A",
+        "down": "26D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "34",
+        "across": "33A",
+        "down": "34D"
+      },
+      {
+        "dark": false,
+        "solution": "t",
+        "label": "35",
+        "across": "33A",
+        "down": "35D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "across": "33A",
+        "down": "22D"
+      },
+      {
+        "dark": false,
+        "solution": "n",
+        "across": "33A",
+        "down": "23D"
+      },
+      {
+        "dark": false,
+        "solution": "g",
+        "across": "33A",
+        "down": "24D"
+      }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "36",
+        "across": "36A",
+        "down": "28D"
+      },
+      {
+        "dark": false,
+        "solution": "r",
+        "across": "36A",
+        "down": "29D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "across": "36A",
+        "down": "30D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "36A",
+        "down": "20D"
+      },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "37",
+        "across": "37A",
+        "down": "26D"
+      },
+      {
+        "dark": false,
+        "solution": "n",
+        "across": "37A",
+        "down": "34D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "across": "37A",
+        "down": "35D"
+      },
+      {
+        "dark": false,
+        "solution": "m",
+        "across": "37A",
+        "down": "22D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "37A",
+        "down": "23D"
+      },
+      {
+        "dark": false,
+        "solution": "r",
+        "across": "37A",
+        "down": "24D"
+      }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "r",
+        "label": "38",
+        "across": "38A",
+        "down": "28D"
+      },
+      {
+        "dark": false,
+        "solution": "o",
+        "across": "38A",
+        "down": "29D"
+      },
+      {
+        "dark": false,
+        "solution": "l",
+        "across": "38A",
+        "down": "30D"
+      },
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "s",
+        "label": "39",
+        "across": "39A",
+        "down": "26D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "39A",
+        "down": "34D"
+      },
+      {
+        "dark": false,
+        "solution": "c",
+        "across": "39A",
+        "down": "35D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "39A",
+        "down": "22D"
+      },
+      {
+        "dark": false,
+        "solution": "r",
+        "across": "39A",
+        "down": "23D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "39A",
+        "down": "24D"
+      }
+    ]
+  ],
+  "clues": {
+    "across": [
+      { "label": "1A", "hint": "Finge lo que no es." },
+      { "label": "7A", "hint": "Gato (inglés)." },
+      { "label": "10A", "hint": "Juntamos, fusionamos." },
+      { "label": "11A", "hint": "Amansa al equipo." },
+      { "label": "12A", "hint": "Persona de ascendencia africana y europea." },
+      {
+        "label": "13A",
+        "hint": "Sigla de mundialmente famosa tarjeta de crédito."
+      },
+      { "label": "14A", "hint": "Sufijo de minerales." },
+      { "label": "15A", "hint": "Traje de baño femenino." },
+      { "label": "17A", "hint": "Caballero en la cultura británica." },
+      { "label": "18A", "hint": "Líder del Vaticano." },
+      { "label": "19A", "hint": "Poblado de pitufos." },
+      { "label": "21A", "hint": "Abreviadas señoritas." },
+      { "label": "25A", "hint": "Inmaculado, sin mezcla." },
+      { "label": "27A", "hint": "Abuelo, con cariño." },
+      { "label": "28A", "hint": "Trigo candeal privado de su corteza." },
+      { "label": "31A", "hint": "Mordisquea como ratón." },
+      { "label": "32A", "hint": "Quiebra comercial." },
+      { "label": "33A", "hint": "Índice inglés de audiencia televisiva." },
+      { "label": "36A", "hint": "Indoeuropea." },
+      { "label": "37A", "hint": "Levantar la moral." },
+      { "label": "38A", "hint": "Papel actoral." },
+      { "label": "39A", "hint": "Extraerá, quitará." }
+    ],
+    "down": [
+      { "label": "1D", "hint": "Obediente, subordinada." },
+      { "label": "2D", "hint": "Inepto, incompetente." },
+      { "label": "3D", "hint": "Forma de dirigirse a un noble." },
+      { "label": "4D", "hint": "__ Thurman, actriz de 'Kill Bill'." },
+      { "label": "5D", "hint": "Sobrino de Abraham." },
+      { "label": "6D", "hint": "Cocinaba en la parrilla." },
+      { "label": "7D", "hint": "Sacié el apetito." },
+      { "label": "8D", "hint": "Finaliza la plegaria." },
+      { "label": "9D", "hint": "Transporte urbano por tarifa." },
+      { "label": "11D", "hint": "Capital de Senegal." },
+      { "label": "16D", "hint": "__ facto, 'inmediatamente'." },
+      { "label": "18D", "hint": "__ Auster, autor de 'Leviatán'." },
+      { "label": "20D", "hint": "División histórica." },
+      { "label": "22D", "hint": "Arena del pugilista." },
+      { "label": "23D", "hint": "Nutrir la tierrra." },
+      { "label": "24D", "hint": "Madre de tu esposa." },
+      { "label": "26D", "hint": "Extrañas, muy peculiares." },
+      { "label": "28D", "hint": "Malvado del 'El rey león'." },
+      { "label": "29D", "hint": "No acierto." },
+      { "label": "30D", "hint": "Correo, en inglés." },
+      { "label": "34D", "hint": "Madre de la Virgen María." },
+      { "label": "35D", "hint": "Gesto nervioso involuntario." }
+    ]
+  }
+}

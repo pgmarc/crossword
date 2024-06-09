@@ -4,6 +4,8 @@ import {
   CrosswordGame,
   CrosswordInfo,
   Position,
+  Clue,
+  CrosswordClues,
 } from "./types";
 import fs from "node:fs";
 import readline from "node:readline";
@@ -33,11 +35,13 @@ async function parseCrosswordFileToCrossword(
         case "?":
           currentRow.push({
             dark: false,
+            solution: "<SOLUTION>",
           } as Cell);
           break;
         case ".":
           currentRow.push({
             dark: true,
+            solution: ".",
           } as Cell);
           break;
         default:
@@ -118,12 +122,29 @@ export function findDownAndAcross(crossword: Crossword): CrosswordInfo {
     taggedCellAcross
   );
 
+  const acrossClues = generateClues(acrossPositions);
+  const downClues = generateClues(downPositions);
+
+  const clues: CrosswordClues = {
+    across: acrossClues,
+    down: downClues,
+  };
+
   return {
     crossword: taggedAcrossAndDown,
+    clues,
     numWords: acrossPositions.length + downPositions.length,
     numWordsAcross: acrossPositions.length,
     numWordsDown: downPositions.length,
   };
+}
+
+function generateClues(positions: Position[]): Clue[] {
+  const clues = [];
+  for (const position of positions) {
+    clues.push({ label: position.label, hint: "PUT YOUR CLUE HERE" });
+  }
+  return clues;
 }
 
 function tagWithLabelAcrossCells(
@@ -164,17 +185,23 @@ export async function rawCrossword2CrosswordGame(
   path: string
 ): Promise<CrosswordGame> {
   const cr = await parseCrosswordFileToCrossword(numRows, numCols, path);
-  const { crossword, numWords, numWordsAcross, numWordsDown }: CrosswordInfo =
-    findDownAndAcross(cr);
+  const {
+    crossword,
+    clues,
+    numWords,
+    numWordsAcross,
+    numWordsDown,
+  }: CrosswordInfo = findDownAndAcross(cr);
 
   return {
     date: new Date(),
     numRows: crossword.length,
     numCols: crossword[0].length,
-    crossword,
     numWords,
     numWordsAcross,
     numWordsDown,
+    crossword,
+    clues,
   };
 }
 
@@ -193,12 +220,21 @@ export function dumpCrosswordToJSONFile(crosswordGame: CrosswordGame) {
 
 export function printHelp() {
   console.log(
-    "Valid arguments:\n" +
-      "   numRows: {Number}\n" +
+    "Positional Arguments:\n" +
+      "   1) numRows: {Number}\n" +
       "   - First argument is the number of rows of the crossword\n" +
-      "   numCols: {Number}\n" +
+      "   2) numCols: {Number}\n" +
       "   - Second argument is the number of columns of the crossword\n" +
-      "   rawCrossword: --file={Path} or {Crossword}\n" +
-      "   - Third argument can be either a file path or the crossword to parse"
+      "   3) grid: --grid=<file path>\n" +
+      "   - Path to the crossword grid with the proper format\n" +
+      "      Format:" +
+      "      - '?' is blank\n" +
+      "      - '.' is a block or dark\n" +
+      "      Example (5 rows, 5 cols):\n" +
+      "      ..???\n" +
+      "      .????\n" +
+      "      ?????\n" +
+      "      ????.\n" +
+      "      ???..\n"
   );
 }
