@@ -1,6 +1,7 @@
 import "./Cell.css";
 
 interface CellProps extends CommonProps {
+  highlight: boolean;
   value: string;
   onChange: (x: number, y: number, character: string) => void;
   label?: string;
@@ -23,13 +24,24 @@ export function Block({ x, y, size }: CommonProps) {
   );
 }
 
-export function Cell({ x, y, size, label, value, onChange }: CellProps) {
+export function Cell({
+  x,
+  y,
+  size,
+  highlight,
+  label,
+  value,
+  onChange,
+}: CellProps) {
   return (
     <div
       data-x={x}
       data-y={y}
       className="cell"
-      style={{ width: `${size}px`, height: `${size}px` }}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+      }}
     >
       {label && <strong className="cell__label">{label}</strong>}
       <input
@@ -40,6 +52,7 @@ export function Cell({ x, y, size, label, value, onChange }: CellProps) {
         className="cell__input"
         style={{
           fontSize: `${size / 2}px`,
+          backgroundColor: highlight ? "yellow" : "",
         }}
       />
     </div>

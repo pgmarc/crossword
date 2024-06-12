@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 h1,
@@ -13,7 +15,40 @@ p {
   text-wrap: balance;
 }
 
-.row {
+.xword {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.xword__grid {
+  grid-column: 1 / 2;
+}
+
+.xword__row {
   display: flex;
   align-items: center;
+}
+
+.xword__clues {
+  grid-column: 2 / 2;
+}
+
+.clue {
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.clues-enum {
+  list-style-type: none;
+}
+
+.clue:hover {
+  background-color: thistle;
+}
+
+.selected-clue {
+  background-color: #dcefff;
 }

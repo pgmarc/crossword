@@ -1,0 +1,48 @@
+[
+  {
+    "$match": {
+      "date": "ISODate('2024-06-09')"
+    }
+  },
+  {
+    "$project": {
+      "numRows": true,
+      "numCols": true,
+      "numWords": true,
+      "numWordsAcross": true,
+      "numWordsDown": true,
+      "date": true,
+      "crossword": {
+        "$map": {
+          "input": "$crossword",
+          "as": "row",
+          "in": {
+            "$map": {
+              "input": "$$row",
+              "as": "cell",
+              "in": {
+                "$cond": {
+                  "if": "$$cell.dark",
+                  "then": {
+                    "$setField": {
+                      "field": "dark",
+                      "input": "$$cell",
+                      "value": "."
+                    }
+                  },
+                  "else": {
+                    "$setField": {
+                      "field": "dark",
+                      "input": "$$cell",
+                      "value": ""
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

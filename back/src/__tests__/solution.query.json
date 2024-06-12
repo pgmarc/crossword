@@ -1,0 +1,31 @@
+[
+  {
+    "$match": {
+      "date": "date"
+    }
+  },
+  {
+    "$project": {
+      "solution": {
+        "$reduce": {
+          "input": "$crossword",
+          "initialValue": "",
+          "in": {
+            "$concat": [
+              "$$value",
+              {
+                "$reduce": {
+                  "input": "$$this",
+                  "initialValue": "",
+                  "in": {
+                    "$concat": ["$$value", "$$this.solution"]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+]

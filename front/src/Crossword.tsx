@@ -1,81 +1,89 @@
-import { useState } from "react";
-import { Block, Cell } from "./Cell";
+import { useEffect, useState } from "react";
+import { Clues } from "./Clues";
 
-interface CrosswordProps {
-  size: number;
-}
+import { useParams } from "react-router-dom";
+import type { Clue, Crossword } from "./types";
+import {
+  Xword,
+  computeDimensions,
+  getCrossword,
+  postCrosswordSolution,
+} from "./api";
+import { CrosswordGrid } from "./CrosswordGrid";
 
-type CrosswordData =
-  | {
-      x: number;
-      y: number;
-      ch: string;
+export function Crossword() {
+  const { date } = useParams();
+  const [grid, setGrid] = useState<Xword | null>(null);
+  const [selectedClue, setSelectedClue] = useState<Clue | null>(null);
+
+  useEffect(() => {
+    if (!date) {
+      throw Error("No crossword for date");
     }
-  | {
-      x: number;
-      y: number;
-      ch: ".";
-      type: "block";
-    };
-
-export function Crossword({ size }: CrosswordProps) {
-  const [grid, setGrid] = useState<CrosswordData[][]>([
-    [
-      { ch: ".", x: 1, y: 1, type: "block" },
-      { ch: "", x: 1, y: 2 },
-      { ch: ".", x: 1, y: 3, type: "block" },
-    ],
-    [
-      { ch: "", x: 2, y: 1 },
-      { ch: "", x: 2, y: 2 },
-      { ch: "", x: 2, y: 3 },
-    ],
-    [
-      { ch: ".", x: 3, y: 1, type: "block" },
-      { ch: "", x: 3, y: 2 },
-      { ch: ".", x: 3, y: 3, type: "block" },
-    ],
-  ]);
+    getCrossword(date)
+      .then((data) => {
+        setGrid(data);
+      })
+      .catch((err) => err);
+  }, [date]);
 
   const handleGridChange = (x: number, y: number, character: string) => {
-    console.log(x, y, character);
-    const newGrid = grid.map((row, rowIndex) =>
+    if (!grid) {
+      throw Error("Trying to set state on a null crossword");
+    }
+
+    const newGrid = grid.crossword.map((row, rowIndex) =>
       row.map((cell, colIndex) =>
-        rowIndex === x && colIndex === y ? { ...cell, ch: character } : cell
+        rowIndex === x && colIndex === y ? { ...cell, dark: character } : cell
       )
     );
-    console.log(newGrid);
-    setGrid(newGrid);
+    setGrid({ ...grid, crossword: newGrid });
+  };
+
+  const handleClickClue = (label: string, clue: string) =>
+    setSelectedClue({ label, hint: clue });
+
+  const handleSubmitCrossword = () => {
+    if (!date) {
+      throw Error("Undefined date");
+    }
+
+    if (!grid) {
+      throw Error("Trying to submit a null grid");
+    }
+
+    postCrosswordSolution(date, grid.crossword)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
 
   return (
-    <>
-      {grid.map((row, rowIndex) => (
-        <div key={rowIndex} className="row">
-          {row.map((cell, colIndex) => {
-            if (cell.ch === ".") {
-              return (
-                <Block
-                  key={`${cell.x}x${cell.y}`}
-                  x={colIndex * size}
-                  y={rowIndex * size}
-                  size={size}
-                />
-              );
-            }
-            return (
-              <Cell
-                x={rowIndex}
-                y={colIndex}
-                size={size}
-                label="1"
-                value={grid[rowIndex][colIndex].ch}
-                onChange={handleGridChange}
-              />
-            );
-          })}
-        </div>
-      ))}
-    </>
+    <main className="xword">
+      {grid && (
+        <>
+          <CrosswordGrid
+            xword={grid}
+            cellSize={computeDimensions(grid.numRows, grid.numCols)}
+            selectedClue={selectedClue}
+            onGridChange={handleGridChange}
+          />
+          <section style={{ display: "flex" }} className="xword__clues">
+            <Clues
+              title="Across"
+              clues={grid.clues.across}
+              onClick={handleClickClue}
+            />
+            <Clues
+              title="Down"
+              clues={grid.clues.down}
+              onClick={handleClickClue}
+            />
+          </section>
+          <footer>
+            <button onClick={handleSubmitCrossword}>Submit crossword</button>
+          </footer>
+        </>
+      )}
+    </main>
   );
 }

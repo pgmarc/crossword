@@ -1,15 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import { Layout } from "./Layout";
-import App from "./App";
 import { Crossword } from "./Crossword";
+import { Crosswords } from "./Crosswords";
 
 export function CrosswordRoutes() {
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<App />} />
-        <Route path=":id" element={<Crossword size={100} />} />
-      </Route>
+      <Route path="/crosswords" element={<Crosswords />} />
+      <Route path="/crosswords/:date" element={<Crossword />} />
     </Routes>
   );
 }
