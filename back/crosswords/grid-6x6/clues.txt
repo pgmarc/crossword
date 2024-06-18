@@ -1,0 +1,15 @@
+label;clue
+# Across
+1A;Me desenvolví con facilidad, como agua en el río.
+5A;Bebida tradicional de la India hecha a base de yogur.
+7A;Condúcelo de un lugar a otro.
+8A;Terminad concluid.
+9A;Fibra que se obtiene de la planta de cannabis sativa.
+10A;Mangos, asideros.
+# Down
+1D;Las vacas, cuando hay crisis económica.
+2D;Pasticho.
+3D;Empleabas, utilizabas.
+4D;Religión cuyo dogma se basa en el Corán.
+6D;Yodo.
+7D;Fardo o lío.

@@ -1,5 +1,5 @@
 {
-  "name": "crossword",
+  "name": "xword",
   "version": "1.0.0",
   "description": "Crossword app",
   "main": "dist/index.js",

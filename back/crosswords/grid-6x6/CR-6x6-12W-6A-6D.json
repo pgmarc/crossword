@@ -1,0 +1,160 @@
+{
+  "date": "2024-06-14T08:50:27.320Z",
+  "numRows": 6,
+  "numCols": 6,
+  "numWords": 12,
+  "numWordsAcross": 6,
+  "numWordsDown": 6,
+  "crossword": [
+    [
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "f",
+        "label": "1",
+        "across": "1A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "l",
+        "label": "2",
+        "across": "1A",
+        "down": "2D"
+      },
+      {
+        "dark": false,
+        "solution": "u",
+        "label": "3",
+        "across": "1A",
+        "down": "3D"
+      },
+      {
+        "dark": false,
+        "solution": "i",
+        "label": "4",
+        "across": "1A",
+        "down": "4D"
+      },
+      { "dark": true, "solution": "." }
+    ],
+    [
+      { "dark": true, "solution": "." },
+      {
+        "dark": false,
+        "solution": "l",
+        "label": "5",
+        "across": "5A",
+        "down": "1D"
+      },
+      { "dark": false, "solution": "a", "across": "5A", "down": "2D" },
+      { "dark": false, "solution": "s", "across": "5A", "down": "3D" },
+      { "dark": false, "solution": "s", "across": "5A", "down": "4D" },
+      {
+        "dark": false,
+        "solution": "i",
+        "label": "6",
+        "across": "5A",
+        "down": "6D"
+      }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "p",
+        "label": "7",
+        "across": "7A",
+        "down": "7D"
+      },
+      { "dark": false, "solution": "a", "across": "7A", "down": "1D" },
+      { "dark": false, "solution": "s", "across": "7A", "down": "2D" },
+      { "dark": false, "solution": "a", "across": "7A", "down": "3D" },
+      { "dark": false, "solution": "l", "across": "7A", "down": "4D" },
+      { "dark": false, "solution": "o", "across": "7A", "down": "6D" }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "8",
+        "across": "8A",
+        "down": "7D"
+      },
+      { "dark": false, "solution": "c", "across": "8A", "down": "1D" },
+      { "dark": false, "solution": "a", "across": "8A", "down": "2D" },
+      { "dark": false, "solution": "b", "across": "8A", "down": "3D" },
+      { "dark": false, "solution": "a", "across": "8A", "down": "4D" },
+      { "dark": false, "solution": "d", "across": "8A", "down": "6D" }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "c",
+        "label": "9",
+        "across": "9A",
+        "down": "7D"
+      },
+      { "dark": false, "solution": "a", "across": "9A", "down": "1D" },
+      { "dark": false, "solution": "ñ", "across": "9A", "down": "2D" },
+      { "dark": false, "solution": "a", "across": "9A", "down": "3D" },
+      { "dark": false, "solution": "m", "across": "9A", "down": "4D" },
+      { "dark": false, "solution": "o", "across": "9A", "down": "6D" }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "a",
+        "label": "10",
+        "across": "10A",
+        "down": "7D"
+      },
+      {
+        "dark": false,
+        "solution": "s",
+        "across": "10A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "a",
+        "across": "10A",
+        "down": "2D"
+      },
+      {
+        "dark": false,
+        "solution": "s",
+        "across": "10A",
+        "down": "3D"
+      },
+      { "dark": true, "solution": "." },
+      { "dark": true, "solution": "." }
+    ]
+  ],
+  "clues": {
+    "across": [
+      {
+        "label": "1A",
+        "hint": "Me desenvolví con facilidad, como agua en el río."
+      },
+      {
+        "label": "5A",
+        "hint": "Bebida tradicional de la India hecha a base de yogur."
+      },
+      { "label": "7A", "hint": "Condúcelo de un lugar a otro." },
+      { "label": "8A", "hint": "Terminad concluid." },
+      {
+        "label": "9A",
+        "hint": "Fibra que se obtiene de la planta de cannabis sativa."
+      },
+      { "label": "10A", "hint": "Mangos, asideros." }
+    ],
+    "down": [
+      { "label": "1D", "hint": "Las vacas, cuando hay crisis económica." },
+      { "label": "2D", "hint": "Pasticho." },
+      { "label": "3D", "hint": "Empleabas, utilizabas." },
+      { "label": "4D", "hint": "Religión cuyo dogma se basa en el Corán." },
+      { "label": "6D", "hint": "Yodo." },
+      { "label": "7D", "hint": "Fardo o lío." }
+    ]
+  }
+}
