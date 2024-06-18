@@ -8,7 +8,7 @@ interface CluesProps {
 
 export function Clues({ clues, title, onClick }: CluesProps) {
   return (
-    <div>
+    <div style={{ overflow: "scroll", height: "700px", margin: "10px" }}>
       <h2>{title}</h2>
       <ul className="clue-enum">
         {clues.map((clue) => (
