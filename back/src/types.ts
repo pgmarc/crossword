@@ -1,5 +1,5 @@
 export interface CrosswordGame extends CrosswordInfo {
-  date: Date;
+  date: Record<string, string>;
   numCols: number;
   numRows: number;
 }

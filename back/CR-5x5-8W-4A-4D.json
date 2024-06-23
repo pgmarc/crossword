@@ -1,0 +1,101 @@
+{
+  "date": { "$date": "2024-06-23T11:12:30.711Z" },
+  "numRows": 5,
+  "numCols": 5,
+  "numWords": 8,
+  "numWordsAcross": 4,
+  "numWordsDown": 4,
+  "crossword": [
+    [
+      {
+        "dark": false,
+        "solution": "<SOLUTION>",
+        "label": "1",
+        "across": "1A",
+        "down": "1D"
+      },
+      {
+        "dark": false,
+        "solution": "<SOLUTION>",
+        "label": "2",
+        "across": "1A",
+        "down": "2D"
+      },
+      { "dark": false, "solution": "<SOLUTION>", "across": "1A" },
+      {
+        "dark": false,
+        "solution": "<SOLUTION>",
+        "label": "3",
+        "across": "1A",
+        "down": "3D"
+      },
+      {
+        "dark": false,
+        "solution": "<SOLUTION>",
+        "label": "4",
+        "across": "1A",
+        "down": "4D"
+      }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "<SOLUTION>",
+        "label": "5",
+        "across": "5A",
+        "down": "1D"
+      },
+      { "dark": false, "solution": "<SOLUTION>", "across": "5A", "down": "2D" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "5A" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "5A", "down": "3D" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "5A", "down": "4D" }
+    ],
+    [
+      { "dark": false, "solution": "<SOLUTION>", "down": "1D" },
+      { "dark": false, "solution": "<SOLUTION>", "down": "2D" },
+      { "dark": true, "solution": "." },
+      { "dark": false, "solution": "<SOLUTION>", "down": "3D" },
+      { "dark": false, "solution": "<SOLUTION>", "down": "4D" }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "<SOLUTION>",
+        "label": "6",
+        "across": "6A",
+        "down": "1D"
+      },
+      { "dark": false, "solution": "<SOLUTION>", "across": "6A", "down": "2D" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "6A" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "6A", "down": "3D" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "6A", "down": "4D" }
+    ],
+    [
+      {
+        "dark": false,
+        "solution": "<SOLUTION>",
+        "label": "7",
+        "across": "7A",
+        "down": "1D"
+      },
+      { "dark": false, "solution": "<SOLUTION>", "across": "7A", "down": "2D" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "7A" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "7A", "down": "3D" },
+      { "dark": false, "solution": "<SOLUTION>", "across": "7A", "down": "4D" }
+    ]
+  ],
+  "clues": {
+    "across": [
+      { "label": "1A", "hint": "PUT YOUR CLUE HERE" },
+      { "label": "5A", "hint": "PUT YOUR CLUE HERE" },
+      { "label": "6A", "hint": "PUT YOUR CLUE HERE" },
+      { "label": "7A", "hint": "PUT YOUR CLUE HERE" }
+    ],
+    "down": [
+      { "label": "1D", "hint": "PUT YOUR CLUE HERE" },
+      { "label": "2D", "hint": "PUT YOUR CLUE HERE" },
+      { "label": "3D", "hint": "PUT YOUR CLUE HERE" },
+      { "label": "4D", "hint": "PUT YOUR CLUE HERE" }
+    ]
+  }
+}

@@ -194,7 +194,7 @@ export async function rawCrossword2CrosswordGame(
   }: CrosswordInfo = findDownAndAcross(cr);
 
   return {
-    date: new Date(),
+    date: { $date: new Date().toISOString() },
     numRows: crossword.length,
     numCols: crossword[0].length,
     numWords,
@@ -205,7 +205,7 @@ export async function rawCrossword2CrosswordGame(
   };
 }
 
-export function dumpCrosswordToJSONFile(crosswordGame: CrosswordGame) {
+export function dumpCrosswordToJSONFile(crosswordGame: CrosswordGame): void {
   const fileName =
     `CR-${crosswordGame.numRows}x${crosswordGame.numCols}` +
     `-${crosswordGame.numWords}W-${crosswordGame.numWordsAcross}A-${crosswordGame.numWordsDown}D` +
