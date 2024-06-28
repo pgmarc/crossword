@@ -27,6 +27,18 @@ type JSONResponse =
       error: Error;
     };
 
+export async function fetchWords(offset: number, wordsToSearch: string) {
+  const res = await fetch(`http://localhost:3000/hint`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ from: offset, word: wordsToSearch }),
+  });
+
+  return res.json();
+}
+
 export function formatDate(date: string) {
   const res = new Date(date);
 
@@ -41,9 +53,9 @@ export function formatDate(date: string) {
 
 export function computeDimensions(numRows: number, numCols: number) {
   if (numRows < 11 || numCols < 11) {
-    return 60;
+    return 70;
   } else if (numRows >= 11 && numCols >= 11) {
-    return 40;
+    return 50;
   } else {
     return 30;
   }

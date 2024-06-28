@@ -7,6 +7,7 @@ interface GridProps {
   cellSize: number;
   selectedClue: Clue | null;
   onGridChange: (x: number, y: number, character: string) => void;
+  onCrosswordSubmit: () => void;
 }
 
 export function CrosswordGrid({
@@ -14,14 +15,23 @@ export function CrosswordGrid({
   cellSize,
   selectedClue,
   onGridChange,
+  onCrosswordSubmit,
 }: GridProps) {
   return (
-    <section className="xword__grid">
-      {selectedClue && (
-        <header className="xword__selected-clue">
-          <span>{selectedClue.label}</span> <span>{selectedClue.hint}</span>
-        </header>
-      )}
+    <section className="xword__grid col">
+      <div className="card">
+        {selectedClue ? (
+          <p>
+            <span className="tag is-large text-primary">
+              <b>{selectedClue.label}</b>
+            </span>{" "}
+            {selectedClue.hint}
+          </p>
+        ) : (
+          <p>Aquí se muestran las pistas. ¡Haz click en alguna!</p>
+        )}
+      </div>
+      <hr />
       {xword.crossword.map((row, rowIndex) => (
         <div key={rowIndex} className="xword__row">
           {row.map((cell, colIndex) => {
@@ -53,6 +63,9 @@ export function CrosswordGrid({
           })}
         </div>
       ))}
+      <button className="button primary" onClick={onCrosswordSubmit}>
+        Comprobar crucigrama
+      </button>
     </section>
   );
 }

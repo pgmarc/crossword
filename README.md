@@ -161,3 +161,43 @@ db.collection.aggregate([
   }
 ])
 ```
+
+Port 9200 is used for all API calls over HTTP. This includes search and aggregations, monitoring and anything else that uses a HTTP request. All client libraries will use this port to talk to Elasticsearch
+Port 9300 is a custom binary protocol used for communications between nodes in a cluster. For things like cluster updates, master elections, nodes joining/leaving, shard allocation
+
+```bash
+docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:8.14.1
+curl -X POST localhost:9200/_bulk/?pretty -H "Content-Type: application/x-ndjson" --data-binary @req
+```
+
+```bash
+curl -X POST http://localhost:9200/_bulk -H "Content-Type: application/json" -d'
+{ "index" : { "_index" : "words" } }
+{ "word": "sana" }
+{ "index" : { "_index" : "words" } }
+{ "word": "gana" }
+{ "index" : { "_index" : "words" } }
+{ "word": "zebra" }
+{ "index" : { "_index" : "words" } }
+{ "word": "mono" }
+{ "index" : { "_index" : "words" } }
+{ "word": "portatil" }
+'
+curl localhost:9200/words/_search/?pretty
+```
+
+```bash
+curl -X GET "localhost:9200/words/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "wildcard": {
+      "word": {
+        "value": "?a?a"
+      }
+    }
+  },
+  "size": 20,
+  "from": 10
+}
+'
+```

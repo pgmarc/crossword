@@ -1,20 +1,3 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  text-wrap: balance;
-}
-
-p {
-  text-wrap: balance;
-}
-
 .xword {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

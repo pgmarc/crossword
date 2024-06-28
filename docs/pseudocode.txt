@@ -1,0 +1,31 @@
+posicionesHorizontales = {}
+posicionesVerticales = {}
+numeroEtiqueta = 0
+
+Procedimiento detectarEtiquetas(crucigrama)
+  Para cada fila en crucigrama
+    Para cada celda en fila
+	  Si celda es bloque Entonces
+	    Continua
+	  Fin Si
+	  
+	  Si (recorriendo el crucigrama en horizontal la
+		  celda anterior es bloque o está en primera columna
+		  y tiene longitud mínima)[a] o (recorriendo 
+		  el crucigrama en vertical la celda anterior es
+		  bloque en vertical o está en primera fila y
+		  tiene longitud mínima)[b] Entonces
+		    nuevaEtiqueta <- nuevaEtiqueta + 1
+	  Fin Si
+		      
+	  Si [a] Entonces
+	    posicionesHorizontales <- etiquetaCelda(celda, nuevaEtiqueta)
+	  Fin Si      
+	  
+	  Si [b] Entonces
+	    posicionesVerticales <- etiquetaCelda(celda, nuevaEtiqueta)
+	  Fin Si
+	Fin Para
+  Fin Para
+  Devuelve posicionesHorizontales, posicionesVerticales
+Fin Procedimiento

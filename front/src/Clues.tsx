@@ -8,17 +8,17 @@ interface CluesProps {
 
 export function Clues({ clues, title, onClick }: CluesProps) {
   return (
-    <div style={{ overflow: "scroll", height: "700px", margin: "10px" }}>
+    <div className="col">
       <h2>{title}</h2>
-      <ul className="clue-enum">
+      <hr />
+      <ul>
         {clues.map((clue) => (
-          <li
-            key={clue.label}
-            className="clue"
-            onClick={() => onClick(clue.label, clue.hint)}
-          >
+          <li key={clue.label} onClick={() => onClick(clue.label, clue.hint)}>
             <p>
-              <span>{clue.label}</span> {clue.hint}
+              <span className="tag">
+                <b className="text-primary">{clue.label}</b>
+              </span>{" "}
+              {clue.hint}
             </p>
           </li>
         ))}

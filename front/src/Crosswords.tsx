@@ -25,19 +25,18 @@ export function Crosswords() {
   }, []);
 
   return (
-    <main>
-      <h1>Crosswords</h1>
+    <main className="container">
+      <h1>Crucigramas</h1>
       {crosswords.length > 0 &&
         crosswords.map((cr) => (
           <Link key={cr.date} to={formatDate(cr.date)}>
-            <div className="xword-info">
-              <span className="xword-info__dim">
-                Grid {cr.numRows}x{cr.numCols}
-              </span>
-              <span className="xword-info__stats">
-                Number of words {cr.numWords}. Across words {cr.numWordsAcross},
-                Down words {cr.numWordsDown}
-              </span>
+            <div className="card">
+              <header>
+                <h2>Crucigrama {formatDate(cr.date)}</h2>
+              </header>
+              <p>Número de palabras: {cr.numWords}</p>
+              <p>Número de palabras en horizontal: {cr.numWordsAcross}</p>
+              <p>Número de palabras en vertical: {cr.numWordsDown}</p>
             </div>
           </Link>
         ))}

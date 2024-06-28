@@ -1,13 +1,15 @@
 import express, { Express, Request, Response } from "express";
-import { param, query, validationResult } from "express-validator";
+import { body, param, query, validationResult } from "express-validator";
 import { MongoClient } from "mongodb";
 import process from "node:process";
+import { Client } from "@elastic/elasticsearch";
 
 const app: Express = express();
 const cors = require("cors");
 const port = process.env.PORT || 3000;
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
 const mongoClient = new MongoClient(mongoUrl, { family: 4 });
+const elasticSearch = new Client({ node: "http://localhost:9200" });
 
 const db = mongoClient.db("xword");
 const crosswords = db.collection("crosswords");
@@ -155,6 +157,48 @@ app.post(
     }
   }
 );
+
+app.post(
+  "/hint",
+  body("word").notEmpty(),
+  body("from").notEmpty().isNumeric(),
+  async (req: Request, res: Response) => {
+    const numOfDocs = await elasticSearch.count({
+      index: "words",
+      query: {
+        wildcard: {
+          word: req.body.word,
+        },
+      },
+    });
+    const docs = await elasticSearch.search({
+      index: "words",
+      from: req.body.from,
+      size: 10,
+      query: {
+        wildcard: {
+          word: req.body.word,
+        },
+      },
+    });
+    res.send({
+      count: numOfDocs.count,
+      matched: docs.hits.hits.map((hit) => {
+        const tempHit = hit._source as Word;
+        return tempHit.word;
+      }),
+    });
+  }
+);
+
+interface Word {
+  word: string;
+}
+
+app.get("/health", async (req: Request, res: Response) => {
+  const running = await elasticSearch.ping();
+  res.send({ running });
+});
 
 const server = app.listen(port, async () => {
   await connectToMongo();

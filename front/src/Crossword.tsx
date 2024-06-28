@@ -10,6 +10,7 @@ import {
   postCrosswordSolution,
 } from "./api";
 import { CrosswordGrid } from "./CrosswordGrid";
+import { SearchPage } from "./SearchPage";
 
 export function Crossword() {
   const { date } = useParams();
@@ -58,30 +59,31 @@ export function Crossword() {
   };
 
   return (
-    <main className="xword">
+    <main className="container">
       {grid && (
         <>
-          <CrosswordGrid
-            xword={grid}
-            cellSize={computeDimensions(grid.numRows, grid.numCols)}
-            selectedClue={selectedClue}
-            onGridChange={handleGridChange}
-          />
-          <section style={{ display: "flex" }} className="xword__clues">
-            <Clues
-              title="Across"
-              clues={grid.clues.across}
-              onClick={handleClickClue}
+          <section className="row">
+            <CrosswordGrid
+              xword={grid}
+              cellSize={computeDimensions(grid.numRows, grid.numCols)}
+              selectedClue={selectedClue}
+              onGridChange={handleGridChange}
+              onCrosswordSubmit={handleSubmitCrossword}
             />
-            <Clues
-              title="Down"
-              clues={grid.clues.down}
-              onClick={handleClickClue}
-            />
+            <div className="row col">
+              <Clues
+                title="Horizontal"
+                clues={grid.clues.across}
+                onClick={handleClickClue}
+              />
+              <Clues
+                title="Vertical"
+                clues={grid.clues.down}
+                onClick={handleClickClue}
+              />
+            </div>
           </section>
-          <footer>
-            <button onClick={handleSubmitCrossword}>Submit crossword</button>
-          </footer>
+          <SearchPage />
         </>
       )}
     </main>
