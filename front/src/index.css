@@ -19,17 +19,11 @@
 }
 
 .clue {
-  margin: 5px;
-  padding: 10px;
   cursor: pointer;
 }
 
-.clues-enum {
-  list-style-type: none;
-}
-
 .clue:hover {
-  background-color: thistle;
+  background-color: #a1ceb9;
 }
 
 .selected-clue {

@@ -13,7 +13,11 @@ export function Clues({ clues, title, onClick }: CluesProps) {
       <hr />
       <ul>
         {clues.map((clue) => (
-          <li key={clue.label} onClick={() => onClick(clue.label, clue.hint)}>
+          <li
+            className="clue"
+            key={clue.label}
+            onClick={() => onClick(clue.label, clue.hint)}
+          >
             <p>
               <span className="tag">
                 <b className="text-primary">{clue.label}</b>

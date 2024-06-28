@@ -70,7 +70,7 @@ function getCrosswordSolution(grid: Crossword): string {
 }
 
 export async function getCrosswords() {
-  const response = await fetch("http://127.0.0.1:3000/crosswords");
+  const response = await fetch("http://localhost:3000/crosswords");
   return response.json();
 }
 

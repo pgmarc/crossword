@@ -38,15 +38,19 @@ export function SearchPage() {
     <section className="row">
       <div className="col card">
         <label>
-          Buscar pista
+          Buscar palabra en el diccionario
           <input
             value={state.searchWord}
-            onChange={(e) => setState({ ...state, searchWord: e.target.value })}
+            onChange={(e) =>
+              setState({ ...state, searchWord: e.target.value, offset: 0 })
+            }
             name="search"
           />
         </label>
-        <p className="text-primary">Página actual: {currentPage}</p>
-        <footer className="row">
+        <p className="text-primary">
+          Página: {currentPage}/{numPages}
+        </p>
+        <div className="row">
           <button
             className="button primary col"
             onClick={handlePrevious}
@@ -61,26 +65,63 @@ export function SearchPage() {
           >
             Siguiente
           </button>
-        </footer>
+        </div>
+        <div>
+          <h4>Buscador inteligente</h4>
+          <p>
+            Si te falta alguna solución y tienes letras descubiertas búscala en
+            el <strong>diccionario de español</strong> integrado.
+          </p>
+          <p>
+            Esta herramienta es similar en funcionalidad al buscador de{" "}
+            <a href="https://onelook.com/">OneLook</a>.
+          </p>
+          <h4>Formato de búsqueda</h4>
+          <p>Puede introducir en el buscador:</p>
+          <ul>
+            <li>
+              Cualquier letra de la <i>a</i> la <i>z</i>, tildes incluidas.
+            </li>
+            <li>
+              <code>?</code> es un <i>comodín</i>, cualquier letra coincide con
+              este símbolo.
+            </li>
+            <li>
+              <code>*</code> representa una secuencia de cero o más caracteres
+              cualesquiera.
+            </li>
+          </ul>
+          <h4>Ejemplos</h4>
+          <ul>
+            <li>
+              <code>*mente</code> busca palabras que terminen por <i>-mente</i>.
+              Por ejemplo abreviadamente, clemente, enormemente.
+            </li>
+            <li>
+              <code>??ano</code> busca palabras de 5 letras en las que sus dos
+              primeras letras sean cualquier carácter. Por ejemplo afano, ébano,
+              enano, llano, plano.
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div className="col">
-        <div className="row">
-          <p className="col">Número de resultados: {state.totalResults}</p>
-          <p className="col">
-            Desde el resultado {state.offset} hasta {state.offset + 9}
-          </p>
-          <p className="col">Número de páginas: {numPages}</p>
-        </div>
+        <p className="text-center">
+          <strong>{state.totalResults}</strong> palabras coinciden con{" "}
+          <strong>{state.searchWord}</strong>
+        </p>
         <table className="striped">
           <thead>
-            <th>
-              <td>Resultados</td>
-            </th>
+            <tr>
+              <th>Posición</th>
+              <th>Resultados de {state.searchWord}</th>
+            </tr>
           </thead>
           <tbody>
-            {state.data.map((word) => (
+            {state.data.map((word, index) => (
               <tr key={word}>
+                <td>{state.offset + index + 1}</td>
                 <td>{word}</td>
               </tr>
             ))}

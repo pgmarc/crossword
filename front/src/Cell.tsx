@@ -52,7 +52,7 @@ export function Cell({
         className="cell__input"
         style={{
           fontSize: `${size / 2}px`,
-          backgroundColor: highlight ? "yellow" : "",
+          backgroundColor: highlight ? "#84DBB2" : "",
         }}
       />
     </div>

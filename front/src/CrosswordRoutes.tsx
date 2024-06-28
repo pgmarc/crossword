@@ -5,8 +5,8 @@ import { Crosswords } from "./Crosswords";
 export function CrosswordRoutes() {
   return (
     <Routes>
-      <Route path="/crosswords" element={<Crosswords />} />
-      <Route path="/crosswords/:date" element={<Crossword />} />
+      <Route path="/" element={<Crosswords />} />
+      <Route path="/:date" element={<Crossword />} />
     </Routes>
   );
 }
