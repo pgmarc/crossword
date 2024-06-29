@@ -1,19 +1,110 @@
-# Crossword application
+# Aplicación de crucigrama
 
-The folder structure of the proyect is the following:
+El repositorio tiene la siguiente estructura de carpetas:
 
-- front: React app to play crossword
-- back: Express api to play crossword + scripts to load easily crossowords
+- front: Aplicación hecha en React para jugar al crucigrama
+- docs: Documentación del proyecto del crucigrama
+- back: API de la aplicación hecha con Express que utiliza MongoDB y Elasticsearch
 
-Run mongo with docker container:
+## Prerequisitos
+
+Para arrancar todos los componentes del proyecto es muy recomendable que
+tenga instalado [Docker](https://www.docker.com/).
+
+- Docker
+- [NodeJS](https://nodejs.org/en)
+
+Antes de iniciar el backend o el front ejecuta en la raiz del repositorio:
+
+Linux
+
+```bash
+docker compose up -d
+```
+
+Poblar `elasticsearch` con las palabras del diccionario
+
+```bash
+curl localhost:9200/_bulk/?pretty -X POST -H "Content-Type: application/x-ndjson" --data-binary @req
+```
+
+## Backend
+
+Para ejecutar el servidor de express tiene que ejecutar lo siguiente:
+
+```bash
+cd back
+npm install
+npm run build
+node dist/index.js
+```
+
+## Frontend
+
+Para ejecutar la aplicación de React con Node ejecuta:
+
+Linux
+
+```bash
+cd front
+npm install
+npm run dev
+```
+
+## Useful commands
+
+### Docker
 
 ```bash
 docker ps -a # List all containers
-docker run -p 27017:27017 --name godo -d mongo
 docker start godo
 docker stop godo
-docker run -e PORT=3000
 ```
+
+### Elasticsearch
+
+Formatear respuesta json
+
+```bash
+curl localhost:9200/words/_search/?pretty
+```
+
+Buscar palabras con que cumplen el formato
+
+```bash
+curl -X GET "localhost:9200/words/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "wildcard": {
+      "word": {
+        "value": "?a?a"
+      }
+    }
+  },
+  "size": 20,
+  "from": 10
+}
+'
+```
+
+Poblar índice con documentos
+
+```bash
+curl -X POST http://localhost:9200/_bulk -H "Content-Type: application/json" -d'
+{ "index" : { "_index" : "words" } }
+{ "word": "sana" }
+{ "index" : { "_index" : "words" } }
+{ "word": "gana" }
+{ "index" : { "_index" : "words" } }
+{ "word": "zebra" }
+{ "index" : { "_index" : "words" } }
+{ "word": "mono" }
+{ "index" : { "_index" : "words" } }
+{ "word": "portatil" }
+'
+```
+
+### Mongo
 
 Usefull queries
 
@@ -160,44 +251,4 @@ db.collection.aggregate([
     }
   }
 ])
-```
-
-Port 9200 is used for all API calls over HTTP. This includes search and aggregations, monitoring and anything else that uses a HTTP request. All client libraries will use this port to talk to Elasticsearch
-Port 9300 is a custom binary protocol used for communications between nodes in a cluster. For things like cluster updates, master elections, nodes joining/leaving, shard allocation
-
-```bash
-docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:8.14.1
-curl -X POST localhost:9200/_bulk/?pretty -H "Content-Type: application/x-ndjson" --data-binary @req
-```
-
-```bash
-curl -X POST http://localhost:9200/_bulk -H "Content-Type: application/json" -d'
-{ "index" : { "_index" : "words" } }
-{ "word": "sana" }
-{ "index" : { "_index" : "words" } }
-{ "word": "gana" }
-{ "index" : { "_index" : "words" } }
-{ "word": "zebra" }
-{ "index" : { "_index" : "words" } }
-{ "word": "mono" }
-{ "index" : { "_index" : "words" } }
-{ "word": "portatil" }
-'
-curl localhost:9200/words/_search/?pretty
-```
-
-```bash
-curl -X GET "localhost:9200/words/_search?pretty" -H 'Content-Type: application/json' -d'
-{
-  "query": {
-    "wildcard": {
-      "word": {
-        "value": "?a?a"
-      }
-    }
-  },
-  "size": 20,
-  "from": 10
-}
-'
 ```

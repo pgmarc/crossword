@@ -150,7 +150,7 @@ app.post(
         type: "wrong-answer",
         title: "Solución incorrecta",
         detail:
-          "Parece que te ha equivocado en alguna palabra. Deberías revisar las pistas e intentarlo de nuevo",
+          "Parece que te has equivocado en alguna palabra. Deberías revisar las pistas e intentarlo de nuevo",
       });
     } else {
       res.send({ message: "¡Felicidades!, has solucionado el crucigrama" });

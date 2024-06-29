@@ -396,50 +396,198 @@ Se ha organizado los siguientes endpoints:
 	1 GET  /crosswords
 	2 GET  /crosswords/AAAA-MM-DD
 	3 POST /crosswords/AAAA-MM-DD/solution
+	4 POST /hint
 \end{verbatim}
 
-Para listas todos los crucigramas que hay en la BBDD hay que hacer una llamada http
-de tipo GET al primer \textit{endpoint} expuesto por la API.
+\subsubsection{Listar crucigramas}
 
-Para consultar una crucigrama por su fecha de publicación simplemente tiene que hacer
-una llamada tipo GET al segundo \textit{endpoint} poniendo en la url por parámetro
-el año, el mes y el dia. Por ejemplo:
+Para listas todos los crucigramas que hay en la BBDD hay que hacer una llamada
+HTTP de tipo GET al endpoint \verb*|/crosswords|.
+
+Si tiene algún cliente HTTP como \verb*|curl| puede ejecutar el siguiente
+comando:
 
 \begin{verbatim}
-	GET /crosswords/2024-06-24
+	curl localhost:3000/crosswords
 \end{verbatim}
 
-Para comprobar si el crucigrama que ha hecho el usuario es correcto, se envía la 
-solución del usuario en el cuerpo de la petición al servidor.
+La petición devuelve un JSON con la siguiente forma:
 
-El formato de la solución que acepta este \textit{endpoint} lo podemos ver en
-el siguiente ejemplo.
+\begin{verbatim}
+	[
+		{
+			"date": "2024-06-24T00:00:00.000Z",
+			"numRows": 6,
+			"numCols": 6,
+			"numWords": 12,
+			"numWordsAcross": 6,
+			"numWordsDown": 6
+		},
+		...
+	]
+\end{verbatim}
+
+\subsubsection{Obtener detalles de un crucigrama}
+
+Para consultar una crucigrama por su fecha de publicación simplemente tiene
+que hacer una llamada tipo GET al endpoint \verb*|/crosswords/AAAA-MM-DD|,
+donde las 4 A es el año, las 2 M es el mes con dos dígitos (enero sería
+01 no 1) y la DD es el día con dos dígitos (el 1 sería el 01).
+
+Si tiene algún cliente de HTTP puede ejecutar le siguiente comando:
+
+\begin{verbatim}
+	curl localhost:3000/crosswords/2024-06-24
+\end{verbatim}
+
+Devuelve la siguiente respuesta:
+
+\begin{verbatim}
+	{
+		"xword": {
+			"_id": "667ebd00e6de693fc48b98a7",
+			"date": "2024-06-24T00:00:00.000Z",
+			"numRows": 6,
+			"numCols": 6,
+			"numWords": 12,
+			"numWordsAcross": 6,
+			"numWordsDown": 6,
+			"clues": {
+				"across": [...],
+				"down": [...]
+			},
+			"crossword": [...]
+		
+	}
+\end{verbatim}
+
+\subsubsection{Comprobar solución del crucigrama}
+
+Para comprobar si el crucigrama que ha hecho el usuario es correcto, el
+usuario envía su solución al servidor al endpoint de tipo POST
+\verb*|/crosswords/AAAA-MM-DD/solution|.
+
+Para comprobar nuestra solución tenemos que enviar en el cuerpo
+de la petición un JSON con este esquema:
+
+\begin{verbatim}
+	{
+		"solution": <formato solución>
+	}
+\end{verbatim}
+
+Se tiene que escribir una palabra formada por la concatenación
+de los caracteres solución de las celdas.
+El carácter que representa a un bloque es un punto.
 
 Si tenemos el crucigrama solucionado:
 
 \begin{verbatim}
-	CBD
-	B..
-	D..
+	CBD -----> CBD
+	B.. -----> CBD, B..
+	D.. -----> CDB, B.., D..
+	
+	Solución: CBDB..D..
 \end{verbatim}
 
-La solución al crucigrama es la cadena de caracteres \verb|CBDB..D..|.
-
-Si una persona tiene lo siguiente como solución al crucigrama
+Si tiene un cliente HTTP puede enviar el siguiente comando al servidor.
+Cuidado 
 
 \begin{verbatim}
-	CBD
-	C..
-	O..
+	curl -X POST localhost:3000/crosswords/2024-06-24/solution
+	-H "Content-Type: application/json; charset=utf-8"
+	-d '{ "solution": "CBDB..D.." }'
 \end{verbatim}
 
-Enviará al servidor la solución \verb*|CBDC..O..|. Si no coinciden las soluciones,
-el servidor responde con un código de estado 400.
+Si soluciona el crucigrama obtiene la siguiente respuesta:
+
+\begin{verbatim}
+	{
+		"message": "¡Felicidades!, has solucionado el crucigrama"
+	}
+\end{verbatim}
+
+Si se ha equivocado obtiene el siguiente mensaje:
+
+\begin{verbatim}
+	{
+		"type": "wrong-answer",
+		"title": "Solución incorrecta",
+		"detail": "Parece que te has equivocado en alguna palabra.
+		 Deberías revisar las pistas e intentarlo de nuevo",
+	}
+\end{verbatim}
+
+\subsubsection{Buscar palabras en el diccionario}
+
+Para buscar palabras en el diccionario se hacer una llamada HTTP
+de tipo POST al endopoint \verb*|/hint| con el siguiente esquema
+JSON:
+
+\begin{verbatim}
+	{
+		"from": 0
+		"word": "??aco"
+	}
+\end{verbatim}
+
+Puede poner los siguientes caracteres en la búsqueda:
+
+\begin{itemize}
+	\item Cualquier letra de la \textit{a} a la \textit{z}, tildes
+	incluidas.
+	\item \textbf{?} es un comodín, cualquier letra coincide con
+	este símbolo
+	\item \textbf{*} es un símbolo que coincide con una secuencia de cero o más caracteres
+	cualesquiera.
+\end{itemize}
+
+Pude mezclar estos caracteres para hacer búsquedas más complejas:
+
+\begin{itemize}
+	\item La búsqueda \textbf{??aco} encuentra registros que terminen en
+		\textbf{aco} (ábaco, ataco, braco, etc...)
+	\item La búsqueda \textbf{ab*} encuentra
+	palabras que empiecen por ab y terminen en cualquier caracter
+	(aborrascaban, aborrascado, aborrascais, etc...).
+\end{itemize}
+
+
+Elasticsearch devuelven paginados los resultados, cada página contiene
+10 elementos. Si quiere obtener más resultados tiene que cambiar el \textit{offset} o la posición en el cuerpo de la petición.
+
+La siguiente búsqueda tiene 178 resultados:
+
+\begin{verbatim}
+	curl -X POST -H "Content-Type: application/json" \
+	-d '{ "from": 10, "word": "?aco"}' \
+	http://localhost:3000/hint
+\end{verbatim} 
+
+\begin{verbatim}
+	{
+		"count": 178,
+		"matched": [
+			"ábaco",
+			"abarraco",
+			"abellaco",
+			"abraco",
+			"achaco",
+			"afrodisíaco",
+			"ajiaco",
+			"alaraco",
+			"alexifármaco",
+			"amáraco"
+		]
+	}
+\end{verbatim}
+
 
 \subsection{MongoDB}
 
-Para poder comparar las soluciones del usuario y del crucigrama se ha utilizado
-una agregación de MongoDB para sacar la cadena solución del crucigrama \ref{fig:reducequery}.
+Para poder comparar las soluciones del usuario y del crucigrama se ha
+utilizado una agregación de MongoDB para sacar la cadena solución del
+crucigrama \ref{fig:reducequery}.
 
 La idea básica con un \verb*|reduce| concatenar los caracteres solución de una fila
 y luego concatenar las cadenas de todas las filas, obteniendo así la cadena solución.
