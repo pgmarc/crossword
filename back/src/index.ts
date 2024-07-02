@@ -158,36 +158,44 @@ app.post(
   }
 );
 
-app.post(
-  "/hint",
-  body("word").notEmpty(),
-  body("from").notEmpty().isNumeric(),
+app.get(
+  "/search",
+  query("q").notEmpty().isAlpha(),
+  query("offset").notEmpty().isNumeric(),
   async (req: Request, res: Response) => {
     const numOfDocs = await elasticSearch.count({
       index: "words",
       query: {
         wildcard: {
-          word: req.body.word,
+          word: req.query.q as string,
         },
       },
     });
     const docs = await elasticSearch.search({
       index: "words",
-      from: req.body.from,
+      from: Number(req.query.offset),
       size: 10,
       query: {
         wildcard: {
-          word: req.body.word,
+          word: req.query.q as string,
         },
       },
     });
-    res.send({
-      count: numOfDocs.count,
-      matched: docs.hits.hits.map((hit) => {
-        const tempHit = hit._source as Word;
-        return tempHit.word;
-      }),
-    });
+
+    if (Number(req.query.offset) >= numOfDocs.count - 1) {
+      res.status(400).send({
+        type: "offset-out-of-bounds",
+        title: "Offset is larger  or equals to the number of results",
+      });
+    } else {
+      res.send({
+        count: numOfDocs.count,
+        matched: docs.hits.hits.map((hit) => {
+          const tempHit = hit._source as Word;
+          return tempHit.word;
+        }),
+      });
+    }
   }
 );
 

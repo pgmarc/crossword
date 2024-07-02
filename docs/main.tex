@@ -10,7 +10,6 @@
 \usepackage[colorlinks=true, citecolor=blue]{hyperref}
 
 
-
 \title{Crucigrama CBD}
 \author{Pedro González Marcos}
 \date{27 de Mayo 2024}
@@ -23,57 +22,85 @@
 
 \section{Introducción}
 
-La idea de este trabajo surge principalmente de una necesidad doble
-que tenía antes de los exámenes de la primera convocatoria de CBD.
+La idea de crear una apliación web de crucigramas surgió mientras estaba preparando la teoría de
+CBD. En los temas había muchas palabras y conceptos que podían sintetizarse perfectamente
+en una definición. Quería hacer una herramienta que me fuese útil para estudiar y que sirviese
+como proyecto para la asignatura.
 
-Hacer el proyecto de CBD y prepararme para el tipo test de la asignatura.
+El stack tecnológico Mongo y ElasticSearch era una buena elección para implementar este
+pasatiempo. Los crucigramas se pueden representar en un simple docuemento. La cuadrícula es una
+lista de listas que no soportan las BBDD relacionales. 
 
-Entonces se me ocurrió implementar una aplicación de crucigrama que
-tematizada en la asignatura. 
+En el trabajo se han cubierto los siguientes puntos:
 
+\begin{itemize}
+	\item Modelar el dominio del problema a un documento en MongoDB
+	\item Explorar los tipos de datos que MongoDB ofrece listas, objetos, propiedades sin definir...
+	\item Explorar el motor de búsqueda de ElasticSearch
+	\item Hacer una aplicación web de un crucigrama que un usuario pueda jugar
+\end{itemize}
+
+De todos esos puntos se han implementado con éxito, la interfaz está hecha en React
+y la API está hecha en Express, el modelo de datos exprime al máximo las ventajas de
+los documentos de Mongo y se ha implementado un buscador de palabras en un diccionario
+utilizando ElasticSearch.
 
 \section{Crucigrama}
 
 Para poner en contexto al que no esté familiarizado con este juego.
 El crucigrama es un pasatiempo donde tienes que introducir palabras
-en una cuadrícula siguiendo las pistas proporcionadas por el crucigramista.
+en una cuadrícula siguiendo las pistas proporcionadas en horizontal y en
+vertical por el crucigramista.
 
-Lo que hace a un crucigrama divertido, es el reto intelectual que plantea
-a la persona.
+Aunque no te sepas todas las palabras puedes llegar a resolver el crucigrama
+rellenando otras pistas. Puede que al principio sea complicado y
+consultes muchas palabras, pero conforme vas haciendo más pasatiempos te vuelves
+más experto.
 
-Aunque un crucigrama pueda parecer injusto a priori, si no te sabes
-una solución puedes intentar sacar la palabra resolviendo otras pistas.
-Esto hace que puedas seguir avanzando en el pasatiempo. Conforme vas
-rellenado el crucigrama llega un punto que puedes intuir la palabra.
+Por este motivo es un crucigrama divertido, te expones diariamente a un reto 
+intelectual, una oportunidad de aprender palabras que desconocías.
 
-Podemos ejemplo, en Estados Unidos publican diariamente en el periódico
-1 crucigrama. Los del lunes son los más sencillos y más pequeños (11x11) y
-los domingos son más complicados siendo más grandes (21x21)  y con pistas
+De hecho, en Estados Unidos publican diariamente en el periódico
+1 crucigrama. Los del lunes son los más sencillos y son pequeños 11 x 11,
+los domingos son muy complicados siendo más grandes 21 x 21 y con pistas
 más crípticas.
 
+Hay todo un gremio especializado en hacer crucigramas, ya que hacer un buen
+crucigrama es muy complicado. Hay que tener en cuenta varios factores como la simetría
+de la cuadrícula, la calidad de las pistas, el tema del crucigrama.
+
+En la dos secciones posteriores vamos a hablar de los dos elementos elementales que 
+tiene que tener un crucigrama:
+
+\begin{itemize}
+	\item Cuadrícula
+	\item Pistas
+\end{itemize}
 
 \subsection{Cuadrícula}
 
-Podemos distinguir en la cuadrícula del crucigrama 2 elementos:
+La cuadrícula es donde podemos introducir la solución del crucigrama. Distinguimos
+dos tipos de celdas:
 
 \begin{itemize}
-	\item Las celdas negras
+	\item Las celdas negras, bloques...
 	\item Las celdas blancas
 \end{itemize}
 
 En las celdas negras no se puede escribir nada y sirven para delimitar
 la longitud de las palabras. Los crucigramistas, suelen jugar con los bloques
-para crear sus crucigramas. Pueden ponerlas por conveniencia al  o por simple
-estética. En general dependiendo donde la coloquen, el crucigrama tendrá más
-o menos palabras.
+para crear sus crucigramas. Pueden ponerlas por conveniencia para separar
+palabras o por simple estética. Dependiendo donde esten situadas, el
+crucigrama tendrá más o menos palabras.
 
-En las celdas blancas, por el contrario, es donde tenemos que poner las
-respuestas a las pistas. 
+No obstante, en las celdas blancas se introducen respuestas a las pistas. 
+Además, si nos fijamos en el crucigrama de la figura \ref{fig:americanXword},
+podemos ver que algunas celdas tienen numeración. Esto tiene que ver con la
+forma de dar pistas en el crucigrama.
 
-Además, si nos fijamos en el crucigrama de la figura
-\ref{fig:americanXword}, podemos ver que algunas celdas tienen numeración. Esto tiene
-que ver con la forma de dar pistas en el crucigrama. Exista la variante numerada
-de la figura \ref{fig:americanXword} y la variante de la figura \ref{fig:xwordESP}
+Hay dos variantes para dar las pistas, enumerar la celdas como en la figura
+\ref{fig:americanXword} y numerar las filas y las columnas de la
+figura \ref{fig:xwordESP}.
 
 \begin{figure}[p]
 	\centering
@@ -84,33 +111,33 @@ de la figura \ref{fig:americanXword} y la variante de la figura \ref{fig:xwordES
 
 \begin{figure}[p]
 	\centering
-	\includegraphics[width=0.7\textwidth]{img/CrosswordUSA.png}
-	\label{fig:americanXword}
+	\includegraphics[width=0.8\textwidth]{img/CrosswordUSA.png}
 	\caption{Crucigrama vacío numerado}
+	\label{fig:americanXword}
 \end{figure}
 
 
-\subsection{Pistas}
+\subsection{Pistas} \label{sec:pistas}
 
-Un crucigrama está formado por palabras en vertical y en horizontal. Para
-solucionar el crucigrama se da una serie de pistas. Estas pistas pueden
-referenciarse en el crucigrama de 2 formas distintas.
+Un crucigrama está formado por palabras en vertical y en horizontal.
+
+Existen dos formas para hacer referencia a las pistas en la cuadrícula.
 
 \begin{itemize}
-	\item Coodernadas: Se numeran las filas y las columnas del crucigrama. Por cada palabra
-	que haya en una fila o columna se añade a la lista de pistas horizontales o
-	verticales en la fila o columna que toca. Por ejemplo en la figura \ref{fig:xwordESP}
-	la fila 3 tiene dos palabras en una misma fila, por lo que en las pistas
-	horizontales podemos ver separado por puntos las dos pistas.
-	\item Numeración de casillas: Se ponen número a las celdas que empiecen una palabra ya
-	sea en horizontal, en vertical o ambas. Puede ver como funciona el algortimo
-	para detectar etiquetas en la sección \ref{sec:algo}.
+	\item Coordenadas: Se numeran las filas y las columnas del crucigrama. Por cada palabra
+	que haya en una fila o en una columna se añade a la lista de pistas horizontales o
+	verticales en el número que le corresponda. Por ejemplo en la figura \ref{fig:xwordESP}
+	la tercera fila tiene 2 palabras, por lo que en las pistas horizontales el número 3
+	tiene 2 pistas separadas por puntos.
+	\item Numeración de casillas: Se numeran las celdas que empiecen una
+	palabra. Puede ver más detalles de la numeración de las celdas en la sección
+	\ref{sec:algo}.
 \end{itemize}
 
 
 \section{Modelo de datos}
 
-Para modelar este pasatiempo necesitamos modelar al menos 3 objectos:
+Si analizamos detenidamente un crucigrama distinguimos 3 elementos básicos:
 
 \begin{itemize}
 	\item La cuadrícula
@@ -120,46 +147,83 @@ Para modelar este pasatiempo necesitamos modelar al menos 3 objectos:
 
 \subsection{Cuadrícula}
 
-Viendo la figura \ref{fig:americanXword} las celdas están dispuestas en filas
+Si observamos la figura \ref{fig:americanXword} las celdas están dispuestas en filas
 y columnas.
 
-En MongoDB podemos guardar listas de cualquier objeto que se nos ocurra, por
-lo que vamos a representar la cuadrícula con una lista de filas y cada fila
-con una lista de celdas. 
+Es sensato pensar en modelar este objeto con una estructura de datos muy utilizado
+en el software, una lista. Como tiene coordenadas vamos a utilizar
+una lista para guardar las celdas de una fila, por lo que habrá tantos elementos
+en la lista como filas haya en la cuadrícula.
 
-Para representar las celdas y los bloques podemos simplemente modelarlo
-como un atributo Booleano que tenga dos estados. Este atributo que llamaremos
-\verb*|dark|, es verdadero si la celda es un bloque y falso si es una celda
-en blanco.
+Para representar las columnas de la cuadrícula utilizamos otra lista para almacenar
+las posiciones de la celda y sus atributos.
 
-Adicionalmente, dejaremos un atributo llamado \verb*|solution| que contendrá una
-cadena de un caracter, es decir, una letra que será la solución de la celda.
+Una cuadrícula será válida si cada fila tiene el mismo número de celdas. En la figura
+\ref{fig:datamodel} podemos ver la relación de un cuadrícula con sus celdas.
 
-Una vez modelado todos los componentes de la cuadrícula tenemos que elegir de
-qué forma vamos a presentar las pistas a los usuarios. En este caso se ha optado
-por la estrategia de numerar las casillas.
+\subsection{Celdas} 
 
-Si implementamos esta estrategia las celdas tendría un atributo opcional para
-guardar el número de la casilla. Es importante destacar que no todas las casillas
-tendrán número sólo aquellas que comiencen una palabra. Por ejemplo si nos fijamos
-en la casilla 3,2 de la figura \ref{fig:xwordNYT} vemos que no tiene ningún número
-asignado ya que la casilla 3,2 ya pertenece a la palabra 6H y 1D.
+Dentro de una cuadrícula nos encontramos como ya se ha comentados dos tipos de celdas
+blancas y negras. El tipo de dato adecuado para modelar este hecho es un atributo
+Booleano. Ahora hay que pensar en la semántica de esos dos estados, si este atributo
+es verdadero la celda será negra y en caso contrario será blanca.
 
-Además para que los usuarios puedan ver fácilmente que palabra están solucionando,
-otros portales de pasatiempos como el New York Times suelen colorear de otro color
-la cuadrilla como podemos ver en la figura \ref{fig:xwordNYT}.
+En la figura \ref{fig:datamodel} el atributo \verb*|dark| indica el estado de una celda.
 
-Podemos modelar esto con dos atributos opcionales \verb*|across| y \verb*|down|
-que tendrán una etiqueta de la palabra horizontal y vertical a la que pertenecen.
-Estos dos atributos opcionales no pueden ser simultáneamente nulos ya que la celda
-tendrá que pertenecer al menos a una palabra del crucigrama ya sea en horizontal
-o en vertical. Si, embargo, se puede dar la situación de que una celda no pueda
-pertenezca a una palabra en horizontal o viceversa. El algoritmo encargado de 
-etiquetar las celdas es el descrito en la sección \ref{sec:algo}.
+Otro elemento crucial a representar de las celdas es su solución. Por simplicidad
+todas las celdas tendrá un carácter solución. Más tarde esto nos será útil para
+calcular la solución fácilmente si no hacemos distinciones de celdas.
 
+En figura \ref{fig:datamodel} en la clase \textit{Cell} este atributo se llama
+\verb*|solution| y es de tipo cadena.
 
-Al final el aspecto de la cuadrícula modelada como un documento 
-sería el siguiente tomando como ejemplo el de la figura \ref{fig:xwordNYT}.
+A estas alturas ya sabemos como representar la cuadrícula y podemos introducir
+las soluciones pero ¿Cómo vamos a resolver el crucigrama si no hay referencias
+a las pistas en la cuadrícula?.
+
+A estas alturas tenemos que elegir la estrategia a implementar para hacer referencia
+a las pistas ya previamente explicada en la sección \ref{sec:pistas}. La estrategia
+que he elegido ha sido la de numerar las casillas.
+
+Es bastante intuitivo para los usuarios que resuelven el crucigrama. Cada celda
+numerada es una palabra y al contrario que la estrategia de coordenadas en el que
+una fila contiene una o más palabras separadas por puntos.
+ 
+Con esta estrategia en mente es importante destacar que no todas las celdas están
+numeradas. Por ejemplo si nos fijamos en la figura \ref{fig:xwordNYT}, la celda de 
+la tercera fila y la segunda columna no tiene ningún número asignado. Esto se debe
+a que esa celda ya pertenece a la palabra 1 en vertical y a la palabra 6 en horizontal.
+
+Con todo esto en mente la etiqueta o número de una celda será un atributo opcional.
+En el modelo de datos de la figura \ref{fig:datamodel} este atributo se llama
+\verb*|label|.
+
+Estos serían los atributos básicos que tendría nuestro modelo. Ahora bien, si
+queremos que el usuario no se pierda mientras está resolviendo una pista, podemos
+iluminar las casillas que corresponden a la pista en la que está concentrado
+como podemos ver en la figura \ref{fig:xwordNYT} del crucigrama del New York Times.
+
+Con esta nueva característica tenemos que expandir el modelo y añadir más atributos.
+
+Podemos modelar esto con dos atributos opcionales que tendrán una etiqueta de la
+palabra horizontal y vertical a la que pertenecen. Estos dos atributos opcionales
+no pueden ser simultáneamente nulos ya que una celda siempre pertenece al menos a
+una palabra del crucigrama ya sea en horizontal o en vertical. No obstante, puede
+darse la situación de que una celda no pueda pertenezca a una palabra en horizontal
+o viceversa.
+
+Los atributos opcionales serán cadenas de texto, la primera parte de la cadena es
+el número de la palabra a la que pertenecen y la segunda parte de la cadena es una
+etiqueta que identifica si pertenece a una palabra en horizontal o en vertical,
+\verb*|<número><A/D>| (Horizontal en inglés es Across y Vertical en inglés es Down).
+
+Estos dos atributos opcionales en el modelo de datos de la figura \ref{fig:datamodel}
+se llaman \verb*|across| si la celda pertenece a una palabra en horizontal y \verb*|down|
+si la celda pertenece a una palabra en vertical.
+
+La cuadrícula modelada de la figura \ref{fig:xwordNYT} como un documento en JSON
+tendría el siguiente aspecto (Se ha modelado la primera fila de la cuadrícula por brevedad;
+La solución a la palabra 1 en horizontal es VIP):
 
 \begin{verbatim}
 [
@@ -197,17 +261,26 @@ sería el siguiente tomando como ejemplo el de la figura \ref{fig:xwordNYT}.
 \subsection{Pistas}
 
 Otra parte fundamental a modelar del crucigrama son las pistas. Como vemos
-en la figura \ref{fig:xwordNYT} situada a la derecha de la cuadrícula podemos
-ver dos columnas con pistas en horizontal y en vertical.
+en la figura \ref{fig:xwordNYT}, situada a la derecha de la cuadrícula podemos
+ver dos columnas con pistas en horizontal y en vertical (Across y Down).
 
-Siguiendo este mismo diseño, podemos pensar en una pista como un objeto \verb*|Clue|
-con dos atributos su etiqueta \verb*|label| y su texto asociado \verb*|hint|
-como podemos ver en el diagrama \ref{fig:datamodel}.
+Siguiendo esta misa filosofía, podemos pensar en una pista como un objeto
+con dos atributos que contengan una lista de las pistas en horizontal y en
+vertical.
 
-Para formar el documento final que contiene las pistas del crucigrama simplemente
-tenemos dos atributos con una lista de pistas horizontales y verticales.
+En el modelo conceptual sería simplemente una lista con pistas sin clasificar,
+pero como en un documento tenemos la facilidad de añadir atributos vamos a 
+distinguir las pistas y no ponerlas en la misma lista.
 
-El documento final que modela a las pistas se vería de la siguiente forma.
+Cada pista del crucigrama debe de tener dos atributos, la referencia de la pista
+en el crucigrama y el texto de la pista. Estos dos atributos nuevamente serán cadenas
+de texto.
+
+En el modelo de datos de la figura  \ref{fig:xwordNYT} esto atributos se llaman
+\verb*|label| y \verb*|hint| respectivamente.
+
+El documento que modela a las pistas del crucigrama  de la figura \ref{fig:xwordNYT}
+se tendría el siguiente aspecto:
 
 \begin{verbatim}
 	{
@@ -229,40 +302,40 @@ El documento final que modela a las pistas se vería de la siguiente forma.
 \end{verbatim}
 
 
-a un documento podemos pensar que es un objeto con dos propiedades las pistas
-en horizontal y en vertical. Estos campos van a tener una lista de pistas que
-tiene dos atributos la etiqueta de la pista en el diagrama \verb*|label|
-por ejemplo \verb*|1A| y el campo \verb*|hint| que es el texto asociado.
-
 \begin{figure}[p]
 	\centering
-	\label{fig:datamodel}
-	\includegraphics[width=0.8\linewidth]{img/datamodel.png}
+	\includegraphics[width=\linewidth]{img/datamodel.png}
 	\caption{Modelo conceptual del crucigrama}
+	\label{fig:datamodel}
 \end{figure}
 
 
 \begin{figure}[p]
 	\centering
-	\includegraphics[width=0.8\textwidth]{img/new-york-times-xword.png}
+	\includegraphics[width=\textwidth]{img/new-york-times-xword.png}
 	\caption{Crucigrama con celdas numeradas}
 	\label{fig:xwordNYT}
 \end{figure}
 
 \subsection{Crucigrama}
 
-Con la cuadrícula y las pistas ya tenemos un crucigrama funcional que podemos
-representar en un documento al que le vamos a añadir un atributo fecha
-\verb*|date| que utilizaremos como clave alternativa para modelar la publicación
-de un crucigrama diario. 
+Con la cuadrícula, la solución y las pistas ya tenemos un crucigrama funcional que podemos
+representar en un documento. 
 
-Además también podemos añadir al modelo del crucigrama 3 atributos derivados, el número de
-palabras horizontales, el número de palabras verticales y el número total de 
-palabras \ref{fig:datamodel}.
+Aunque antes de eso podemos añadirle más información y semántica al modelo.
 
-El documento final tendría la siguiente pinta si juntamos el JSON que modela
-la cuadrícula y las pistas. Para no repetir el mismo JSON anterior se ha puesto
-una elipsis.
+Como los crucigramas se publican diariamente añadimos un atributo de tipo fecha. Además
+vamos a imponer como regla de negocio que no puede más de un crucigrama publicado en un
+día.
+
+También añadimos al modelo 3 atributos derivados, el número de palabras horizontales,
+el número de palabras verticales y el número total de palabras que serán calculados.
+
+Todos estos atributos están en la clase \textit{Crossword} de la figura \ref{fig:datamodel}.
+
+El documento final del crucigrama de la figura \ref{fig:xwordNYT} tendría el siguiente
+aspecto con todos los documentos ensamblados. Para no repetir los documentos anteriores
+se ha puesto una elipsis:
 
 \begin{verbatim}
 	{
@@ -272,78 +345,79 @@ una elipsis.
 		"numWords": 10,
 		"numWordsAcross": 5,
 		"numWordsDown": 5,
-		"crossword": [...]
-		"clues": {
-			across: [...]
-			down: [...]
-		}
+		"crossword": [[...],...]
+		"clues": { across: [...], down: [...] }
 	}
 \end{verbatim}
 
 \subsection{Algoritmo} \label{sec:algo}
 
-En esta sección describiremos brevemente el algoritmo utilizado para detectar
-las etiquetas que tiene el crucigrama. Está pensado para trabajar
-con crucigramas Americanos \cite{XwordRules} que tienen una serie de reglas
-como:
+En esta sección describiremos brevemente el algoritmo utilizado para numerar
+y etiquetar las celdas del crucigrama.
+
+Está pensado para trabajar con crucigramas americanos \cite{XwordRules} que tienen una serie de reglas como:
 
 \begin{itemize}
-	\item Las palabras están formadas por al menos 3 letras.
-	\item El crucigrama debe ser simétrico si lo rotamos 180º, es decir si lo 
-	rotamos debe coincidir las celdas originales
+	\item Las palabras al menos tienen 3 letras.
+	\item El crucigrama es simétrico si lo rotamos 180 grados.
 \end{itemize}
 
 El algoritmo detectará una palabra, si al menos su longitud es de tres caracteres.
 
-A continuación se muestra el pseudocódigo \cite{pseudocode} que describe al
-algoritmo:
+En la figura \ref{fig:detectLabels} se muestra el pseudocódigo \cite{pseudocode}
+que describe al algoritmo:
 
-\begin{figure}[h]
+\begin{figure}[p]
 	\centering
-	\label{fig:detectLabels}
-	\includegraphics[width=0.7\linewidth]{img/pseudocode.png}
+	\includegraphics[width=\linewidth]{img/pseudocode.png}
 	\caption{Algoritmo detector de etiquetas}
+	\label{fig:detectLabels}
 \end{figure}
 
 
 \section{Marco de trabajo}
 
-Con el modelo de datos terminado ya podemos pasar un crucigrama a un
-documento en EJSON \cite{EJSON} (archivo JSON en el que se especifican
-los tipos de datos de MongoDB). No obstante, el modelo planteado es bastante largo
-como para que una persona se ponga a escribir un JSON a mano.
+Con el modelo de datos terminado ya tenemos un documento que podemos pasar a 
+EJSON \cite{EJSON} (archivo compatible con el RFC 8259 en el que se especifican
+en JSON los tipos de datos de MongoDB).
 
-Por esta razón se ha desarrollado el marco del proyecto un script  que transforma
-una cuadrícula en un formato personalizado en un documento EJSON (Paso 1 figura
-\ref{fig:framework}). Luego importaremos el documento resultante a la BBDD (Paso 2
-\ref{fig:framework}).
+Hay un problema con el modelo planteado, es bastante largo como para que alguien
+escriba el JSON manualmente.
+
+Por esta razón se ha desarrollado el marco del proyecto un script que transforma
+plantilla de un crucigrama en un formato personalizado a un un documento plantilla
+EJSON (Paso 1 de la figura \ref{fig:framework}).
+
+Posteriormente rellenaremos la plantilla con las pistas y finalmente importaremos
+el documento a nuestra BBDD (Paso 2 de la figura \ref{fig:framework}).
 
   
-\begin{figure}[h!]
+\begin{figure}[t]
 	\centering
 	\includegraphics[width=\linewidth]{img/framework}
-	\caption{Transformación del formato de texto a JSON que puede leer MongoDB}
+	\caption{Transformación de la plantilla personalizada de la cuadrícula a una platilla
+		EJSON que puede leer MongoDB}
 	\label{fig:framework}
 \end{figure}
 
-El formato personalizado elegido para representar este pasatiempo es el de
-la página Words Up? \cite{wordsUp} que tiene un gran librería de crucigramas
-hechos
+La plantilla personalizada para representar un crucigrama es el de la página
+\textit{Words Up?} \cite{wordsUp} que tiene un gran librería de crucigramas.
 
 El formato propuesto por la página es el siguiente:
 
 \begin{itemize}
+	\item Es un archivo de texto corriente.
 	\item Las bloques se representan con un punto.
 	\item Las celdas en blanco se representan con un interrogante.
-	\item El número de filas del crucigrama es el número de líneas.
+	\item El número de filas del crucigrama es el número de líneas del archivo de texto.
 	\item El número de columnas del crucigrama es la longitud de caracteres de una
 	línea. La longitud debe ser consistente en todas las líneas del crucigrama. Es
 	decir todas las líneas deben tener la misma longitud de caracteres.
-	\item El saldo de línea \verb*|\n| o \verb*|\r\n| indica la terminación
+	\item El saldo de línea \verb*|\n| o \verb*|\r\n| es la terminación
 	de una fila y el comienzo de la siguiente.
 	\item Cualquier carácter que no sea un punto, un interrogante o un salto de línea
-	es inválido.
-	\item No se admiten líneas en blanco
+	no cumple con el formato esperado del archivo de texto.
+	\item No pueden haber líneas en blanco.
 \end{itemize}
 
 Por ejemplo en la figura \ref{fig:xwordCustomFormat} podemos ver el formato de archivo
@@ -351,46 +425,51 @@ propuesto.
 
 \begin{figure}[t]
 	\centering
-	\label{fig:xwordCustomFormat}
 	\includegraphics[width=0.7\linewidth]{img/formato.png}
 	\caption{A la izquierda un crucigrama con 5 filas y 5 columnas.
 		A la derecha la representación del crucigrama en un archivo de texto}
+	\label{fig:xwordCustomFormat}
 \end{figure}
 
-Este formato facilita de crear las plantillas Siendo la alternativa de JSON
-menos legible y mucho más verboso.
+Este formato facilita la creación de plantillas, siendo la alternativa de escribir el
+EJSON menos legible y mucho más verboso.
 
-Una vez ya tenemos la cuadrícula, la solución pensada y las pistas escritas
-le damos la cuadrícula al script y el programa se encarga de crearnos la plantilla
-en EJSON \cite{EJSON}.
+Una vez ya tenemos la plantilla de la cuadrícula escrita le damos la cuadrícula al
+script y el programa se encarga de crearnos la plantilla en EJSON \cite{EJSON}.
 
-Ya con el archivo en JSON creado, tiene que escribir la solución del crucigrama en
-la cuadrícula, que es simplemente rellenar donde ponga \verb*|<SOLUTION>| el caracter 
-de la palabra correspondiente. Después en la sección \verb*|clues| tiene que rellenar 
+Ya con el archivo en EJSON creado, tiene que escribir la solución del crucigrama en
+la cuadrícula, que es simplemente rellenar donde ponga \verb*|<SOLUTION>| el carácter 
+solución de la celda correspondiente. Después en la sección \verb*|clues| tiene que rellenar 
 las pistas horizontales y verticales. 
 
-Es importante mencionar que la fecha que saca el script está en EJSON \cite{EJSON}
-un formato que permite importar datos de diferentes tipos a MongoDB. En este caso
-si quere importar una fecha a MongoDB. Tiene que escribir lo siguiente: 
+Es importante mencionar que antes de que importe el EJON a MongoDB tiene que poner la
+parte de la hora a cero \verb*|00:00:00.000Z|, si no lo hace el front no funcionará: 
 
 \begin{verbatim}
 	"date": { "$date": "2024-06-22T00:00:00.000Z" }
+	...
 \end{verbatim}
 
-Para ejecutar el script por favor consulte el README del repositorio \cite{repositorio}
+Una vez que haya hecho las modificaciones pertinentes a la plantilla ya puede importar el
+EJSON en la instancia de MongoDB.
+
+Para ejecutar el script por favor consulte el \verb*|README| del repositorio \cite{repositorio}
 o el Anexo \ref{sec:Anexo} de este documento.
 
-Una vez que tenemos el JSON definitivo podemos importar el JSON en la instancia de
-MongoDB utilizando el comando mongo
 
+\section{Tecnologías}
 
 \subsection{Express}
 
-En vez de utilizar los métodos nativos del servidor de http que expone node se ha
-utilizado la librería de npm \verb*|express| que nos ofrece una abstracción para 
-implementar rutas de una API.
+Para que la aplicación sea interactiva es imprescindible comunicarnos con un servicio 
+que nos diga en el estado de la aplicación. Vamos a utilizar la arquitectura cliente
+servidor desarrollando una API que nos permita interactuar con nuestra BBDD e implementar
+lógica de negocio. 
 
-Se ha organizado los siguientes endpoints:
+En vez de utilizar los métodos nativos de node para crear un servidor http, utilizaremos
+la librería de npm \verb*|express| que nos ofrece una API más amigable para el desarrollador.
+
+Se han implementado los siguientes endpoints:
 
 \begin{verbatim}
 	1 GET  /crosswords
@@ -592,12 +671,61 @@ crucigrama \ref{fig:reducequery}.
 La idea básica con un \verb*|reduce| concatenar los caracteres solución de una fila
 y luego concatenar las cadenas de todas las filas, obteniendo así la cadena solución.
 
-\begin{figure}[h!]
+\begin{figure}[p]
 	\centering
 	\includegraphics[width=\linewidth]{img/reduceQuery}
 	\caption{Agregación para obtener solución del crucigrama.}
 	\label{fig:reducequery}
 \end{figure}
+
+\subsection{Elastichsearch}
+
+En la etapa de análisis del problema, encontré un video \cite{video:CreateXword}
+interesante donde mostraban una buscador de palabras en inglés, \cite{OneLook}. Este buscador
+lo utilizan mucho los crucigramistas de referencia para crear las pistas. Sirviendo 
+de inspiración esta herramienta se ha implementado un buscador de palabras en español.
+
+Es muy conocido ElasticSeacrh en la industria por ser tecnología muy eficiente para buscar
+patrones en grandes cantidades de texto. Por lo que en el contexto del proyecto tiene sentido
+usar ElasticSearch como motor de búsqueda. De hecho el stack de ElastichSearch utiliza Apache
+Lucene otro buscador motor de búsqueda.
+
+Para hacer las consultas a ElastichSearch se utilizará su API RESTful mediante el cliente
+de Javascript \verb*|@elastic/elasticsearch| en el servidor de Express.
+
+La siguiente consulta busca en el diccionario palabras que tengan en la segunda y en
+la cuarta posición una a:
+
+\begin{verbatim}
+	curl -X GET "localhost:9200/words/_search?pretty" \
+	-H 'Content-Type: application/json' -d'
+	{
+		"query": {
+			"wildcard": {
+				"word": {
+					"value": "?a?a"
+				}
+			}
+		},
+	}
+\end{verbatim}
+
+Utilizando la API de javascript sería de la siguiente forma:
+
+\begin{verbatim}
+	elasticSearch.search({
+		index: "words",
+		query: {
+			wildcard: {
+				word: "?a?a",
+			},
+		},
+	})
+\end{verbatim}
+
+Podemos ver que la API de javascript es una forma más programática de hacer la consulta.
+Sin embargo sigue siendo un cliente de la API proporcionando una fachada al programador.
+
 
 \section{Conclusiones}
 
@@ -673,16 +801,17 @@ Ejemplo de uso:
 	\bibitem{XwordRules} Shortz, W. (s.f). \textit{Real Rules of the Puzzle}.
 	BarelyBad. https://barelybad.com/xwdrulesreal.htm
 	\bibitem{pseudocode} Wikipedia (s.f). \textit{Pseudocódigo}. Wikipedia. https://es.wikipedia.org/wiki/Pseudoc\%C3\%B3digo
+	\bibitem{video:CreateXword} WIRED (10 de diciembre de 2018).
+	\textit{How to Create a Crossword Puzzle \textbar WIRED}. [Archivo de Video, OneLook 6m02s]. 
+	https://www.youtube.com/watch?v=aAqQnXHd7qk\&ab\_channel=WIRED
 	\bibitem{OneLook} OneLook (s.f). \textit{OneLook}. https://onelook.com/
 	\bibitem{wordsUp} Words Up Games (s.f). \textit{Grid Library for Crossword 
 	Compiler and Sympathy}. Words Up Games. https://wordsup.co.uk/grid-libraries.php
 	\bibitem{EJSON} MongoDB (s.f). \textit{EJSON}. MongoDB. https://www.mongodb.com/docs/mongodb-shell/reference/ejson/
 	\bibitem{repositorio} González, P. (26 de Mayo de 2024). \textit{crossword}. crossword.
 	https://github.com/pgmarc/crossword
-	\bibitem{repoDic} Duenas, J (). \textit{diccionario-espanol-txt}. Diccionario español.
+	\bibitem{repoDic} Duenas, J. (25 de marzo de 2018). \textit{diccionario-espanol-txt}. Diccionario español.
 	https://github.com/JorgeDuenasLerin/diccionario-espanol-txt
 \end{thebibliography}
-
-
 
 \end{document}

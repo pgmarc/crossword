@@ -28,13 +28,15 @@ type JSONResponse =
     };
 
 export async function fetchWords(offset: number, wordsToSearch: string) {
-  const res = await fetch(`http://localhost:3000/hint`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ from: offset, word: wordsToSearch }),
-  });
+  const res = await fetch(
+    `http://localhost:3000/search?q=${wordsToSearch}&offset=${offset}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   return res.json();
 }

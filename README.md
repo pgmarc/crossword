@@ -22,9 +22,10 @@ Linux
 docker compose up -d
 ```
 
-Poblar `elasticsearch` con las palabras del diccionario
+Poblar `elasticsearch` con las palabras del diccionario (Tarda aproximadamente 1 minuto):
 
 ```bash
+# En la raiz del repositorio
 curl localhost:9200/_bulk/?pretty -X POST -H "Content-Type: application/x-ndjson" --data-binary @req
 ```
 
