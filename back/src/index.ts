@@ -182,7 +182,7 @@ app.get(
       },
     });
 
-    if (Number(req.query.offset) >= numOfDocs.count - 1) {
+    if (Number(req.query.offset) > numOfDocs.count) {
       res.status(400).send({
         type: "offset-out-of-bounds",
         title: "Offset is larger  or equals to the number of results",
