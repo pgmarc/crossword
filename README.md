@@ -29,8 +29,7 @@ El repositorio tiene la siguiente estructura de carpetas:
 
 ## Prerequisitos
 
-Para arrancar todos los componentes del proyecto es muy recomendable que
-tenga instalado [Docker](https://www.docker.com/).
+Para arrancar el proyecto tiene que instalar estos compoenetes:
 
 - [Docker](https://www.docker.com/products/docker-desktop/)
 - [NodeJS](https://nodejs.org/en)
@@ -41,6 +40,7 @@ Linux y Windows
 
 ```bash
 docker compose up -d
+docker compose down -v  # Para quitar los contenedores
 ```
 
 Una vez iniciado los contenedores:
