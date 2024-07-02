@@ -453,8 +453,8 @@ parte de la hora a cero \verb*|00:00:00.000Z|, si no lo hace el front no funcion
 Una vez que haya hecho las modificaciones pertinentes a la plantilla ya puede importar el
 EJSON en la instancia de MongoDB.
 
-Para ejecutar el script por favor consulte el \verb*|README| del repositorio \cite{repositorio}
-o el Anexo \ref{sec:Anexo} de este documento.
+Para ejecutar el script por favor consulte el \verb*|README| del
+repositorio \cite{repositorio}.
 
 
 \section{Tecnologías}
@@ -475,7 +475,7 @@ Se han implementado los siguientes endpoints:
 	1 GET  /crosswords
 	2 GET  /crosswords/AAAA-MM-DD
 	3 POST /crosswords/AAAA-MM-DD/solution
-	4 POST /hint
+	4 GET  /search/?q=<query>&offset=<number>
 \end{verbatim}
 
 \subsubsection{Listar crucigramas}
@@ -543,7 +543,8 @@ Devuelve la siguiente respuesta:
 \subsubsection{Comprobar solución del crucigrama}
 
 Para comprobar si el crucigrama que ha hecho el usuario es correcto, el
-usuario envía su solución al servidor al endpoint de tipo POST
+usuario envía su solución al servidor al endpoint de tipo POST:
+
 \verb*|/crosswords/AAAA-MM-DD/solution|.
 
 Para comprobar nuestra solución tenemos que enviar en el cuerpo
@@ -555,9 +556,8 @@ de la petición un JSON con este esquema:
 	}
 \end{verbatim}
 
-Se tiene que escribir una palabra formada por la concatenación
-de los caracteres solución de las celdas.
-El carácter que representa a un bloque es un punto.
+Se tiene que escribir una palabra formada por la concatenación de los caracteres
+solución de las celdas. El carácter que representa a un bloque es un punto.
 
 Si tenemos el crucigrama solucionado:
 
@@ -599,26 +599,18 @@ Si se ha equivocado obtiene el siguiente mensaje:
 
 \subsubsection{Buscar palabras en el diccionario}
 
-Para buscar palabras en el diccionario se hacer una llamada HTTP
-de tipo POST al endopoint \verb*|/hint| con el siguiente esquema
-JSON:
+Para buscar palabras en el diccionario se hacer una llamada HTTP de tipo GET al
+endopoint \verb*|/search?q=<query>&offset<numero>|
 
-\begin{verbatim}
-	{
-		"from": 0
-		"word": "??aco"
-	}
-\end{verbatim}
-
-Puede poner los siguientes caracteres en la búsqueda:
+Puede poner en la \verb*|query| los siguientes caracteres en la búsqueda:
 
 \begin{itemize}
 	\item Cualquier letra de la \textit{a} a la \textit{z}, tildes
 	incluidas.
 	\item \textbf{?} es un comodín, cualquier letra coincide con
 	este símbolo
-	\item \textbf{*} es un símbolo que coincide con una secuencia de cero o más caracteres
-	cualesquiera.
+	\item \textbf{*} es un símbolo que coincide con una secuencia de cero o más
+	caracteres cualesquiera.
 \end{itemize}
 
 Pude mezclar estos caracteres para hacer búsquedas más complejas:
@@ -627,36 +619,35 @@ Pude mezclar estos caracteres para hacer búsquedas más complejas:
 	\item La búsqueda \textbf{??aco} encuentra registros que terminen en
 		\textbf{aco} (ábaco, ataco, braco, etc...)
 	\item La búsqueda \textbf{ab*} encuentra
-	palabras que empiecen por ab y terminen en cualquier caracter
+	palabras que empiecen por ab y terminen en cualquier carácter
 	(aborrascaban, aborrascado, aborrascais, etc...).
 \end{itemize}
 
 
-Elasticsearch devuelven paginados los resultados, cada página contiene
-10 elementos. Si quiere obtener más resultados tiene que cambiar el \textit{offset} o la posición en el cuerpo de la petición.
+Elasticsearch \textbf{devuelven paginados} los resultados, cada página contiene
+10 elementos. Si quiere obtener más resultados tiene que cambiar el
+\textit{offset} o la petición.
 
-La siguiente búsqueda tiene 178 resultados:
+La siguiente búsqueda tiene 16 resultados:
 
 \begin{verbatim}
-	curl -X POST -H "Content-Type: application/json" \
-	-d '{ "from": 10, "word": "?aco"}' \
-	http://localhost:3000/hint
+	curl http://localhost:3000/search?q=??aco&offset=0
 \end{verbatim} 
 
 \begin{verbatim}
 	{
-		"count": 178,
+		"count": 16,
 		"matched": [
 			"ábaco",
-			"abarraco",
-			"abellaco",
-			"abraco",
-			"achaco",
-			"afrodisíaco",
-			"ajiaco",
-			"alaraco",
-			"alexifármaco",
-			"amáraco"
+			"anaco",
+			"asaco",
+			"ataco",
+			"ayaco",
+			"braco",
+			"chaco",
+			"claco",
+			"cuaco",
+			"flaco"
 		]
 	}
 \end{verbatim}
@@ -664,8 +655,8 @@ La siguiente búsqueda tiene 178 resultados:
 
 \subsection{MongoDB}
 
-Para poder comparar las soluciones del usuario y del crucigrama se ha
-utilizado una agregación de MongoDB para sacar la cadena solución del
+Para poder comparar las soluciones del usuario y del crucigrama se han utilizado
+una agregación de MongoDB para sacar la cadena solución del
 crucigrama \ref{fig:reducequery}.
 
 La idea básica con un \verb*|reduce| concatenar los caracteres solución de una fila
@@ -678,20 +669,29 @@ y luego concatenar las cadenas de todas las filas, obteniendo así la cadena sol
 	\label{fig:reducequery}
 \end{figure}
 
+También se ha utilizado una consulta que dependiendo del tipo de celda que sea devuelve
+un documento con una cuadrícula vacía para el frontend, es el archivo
+\verb*|crossword.query.json| dentro del repositorio \cite{repositorio}.
+
 \subsection{Elastichsearch}
 
-En la etapa de análisis del problema, encontré un video \cite{video:CreateXword}
-interesante donde mostraban una buscador de palabras en inglés, \cite{OneLook}. Este buscador
-lo utilizan mucho los crucigramistas de referencia para crear las pistas. Sirviendo 
-de inspiración esta herramienta se ha implementado un buscador de palabras en español.
+En la etapa de análisis del problema, encontré un vídeo \cite{video:CreateXword}
+interesante donde mostraban una buscador de palabras en inglés, OneLook \cite{OneLook}.
+Este buscador lo utilizan mucho los crucigramistas de referencia para crear las pistas.
+Sirviendo de inspiración esta herramienta se ha implementado un buscador de
+palabras en español.
 
-Es muy conocido ElasticSeacrh en la industria por ser tecnología muy eficiente para buscar
-patrones en grandes cantidades de texto. Por lo que en el contexto del proyecto tiene sentido
-usar ElasticSearch como motor de búsqueda. De hecho el stack de ElastichSearch utiliza Apache
-Lucene otro buscador motor de búsqueda.
+Gracias a un usuario que ha hecho \textit{scraping} de la página entera de la RAE \cite{repoDic}
+ha sido posible implementar esta característica en la aplicación.
 
-Para hacer las consultas a ElastichSearch se utilizará su API RESTful mediante el cliente
-de Javascript \verb*|@elastic/elasticsearch| en el servidor de Express.
+Es muy conocido ElasticSeacrh en la industria por ser tecnología muy eficiente buscando
+información en grandes cantidades de texto. Por lo que en el contexto del proyecto tiene sentido
+usar ElasticSearch como motor de búsqueda. De hecho, el stack de ElastichSearch utiliza Apache
+Lucene por detrás, que es otro motor de búsqueda.
+
+Para hacer las consultas a ElastichSearch se ha utilizado el cliente de Javascript
+\verb*|@elastic/elasticsearch| en el servidor de Express que ya implementar las llamadas
+a la API.
 
 La siguiente consulta busca en el diccionario palabras que tengan en la segunda y en
 la cuarta posición una a:
@@ -726,76 +726,36 @@ Utilizando la API de javascript sería de la siguiente forma:
 Podemos ver que la API de javascript es una forma más programática de hacer la consulta.
 Sin embargo sigue siendo un cliente de la API proporcionando una fachada al programador.
 
+\subsection{React}
+
+Para implementar la interfaz web de la aplicación se ha utilizado la librería de Javascript
+React. Se ha dividido la aplicación en componentes para destacando el componente que se
+encarga de renderizar la cuadrícula, las pistas y el buscador inteligente.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\linewidth]{img/xword-react}
+	\caption{Aspecto de la interfaz web del crucigrama}
+	\label{fig:xword-react}
+\end{figure}
 
 \section{Conclusiones}
 
-\section{Anexo} \label{sec:Anexo}
-
-\subsection{Prerequisitos}
+En el proyecto del crucigrama se ha tocado varias áreas de conocimiento de CBD:
 
 \begin{itemize}
-	\item NodeJS 20.X.X o superior (https://nodejs.org/en/)
-	\item Docker Desktop (Windows, https://www.docker.com/products/docker-desktop/),
-	Docker Engine (Linux, https://docs.docker.com/engine/install/)
+	\item Pasar del modelo conceptual a un modelo basado en documentos.
+	\item Se ha implementado la característica insignia por lo que se conoce a
+	ElasticSearch.
+	\item Se ha implementado una aplicación cliente y servidor que puede ser
+	escable horizontalmente.
+	\item Se ha explorado las agregaciones de MongoDB para calcular datos derivados.
+	\item Se ha ido más allá de los requisitos y se ha implementado una interfaz
+	funcional para jugar al crucigrama.
+	\item Se han automatizado la creación de documentos EJSON mediante scripts
+	personalizados.
 \end{itemize}
 
-Para arrancar tanto el frontend como el backend se necesita alguna distribución
-de NodeJS instalada. Para arrancar el backend hay que seguir los siguientes pasos:
-
-\begin{verbatim}
-Antes de arrancar el back necesita que el driver de mongodb para
-express se conecte a una instancia en el ordenador,
-si utiliza docker:
-> docker run --name xword -p 27017:27017 -d mongo:latest
-
-Una vez arrancada la BBDD puede arrancar el backend
-	
-Sitúese en la capeta back
-> cd back
-> npm install
-> npm build  # Crea una carpeta dist en el que se encontrarán
-los archivos .js requeridos para ejecutar el servidor de express
-
-Después de arrancar mongo ya está en condiciones para arrancar
-el servidor de express
-> node dist/index.js
-\end{verbatim}
-
-Para arrancar el frontend tiene que situarse en la carpeta front y ejecutar
-
-\begin{verbatim}
-> cd front
-> npm install
-> npm run dev
-\end{verbatim}
-
-\subsection{Script}
-
-El script tiene los siguientes parámetros posicionales:
-
-\begin{itemize}
-	\item Número de filas
-	\item Número de columnas
-	\item Ruta del archivo donde se encuentra la cuadrícula con el formato
-	\ref{fig:xwordCustomFormat} esperado.
-\end{itemize}
-
-Para ejecutar el script primero tendrá que hacer los siguientes pasos:
-
-\begin{verbatim}
-	> cd back
-	> npm install (Opcional si ya ha instalado los node_modules)
-	> npm build (Se crea un carpeta dist con script.js)
-\end{verbatim}
-
-Ejemplo de uso:
-
-\begin{verbatim}
-	Windows:
-	> node dist\script.js 11 11 --grid=.\crossword\example.txt
-	Linux:
-	> node ./dist/script.js 11 11 --grid=./crossword/example.txt
-\end{verbatim}
 
 \begin{thebibliography}{100}
 	\bibitem{XwordRules} Shortz, W. (s.f). \textit{Real Rules of the Puzzle}.
